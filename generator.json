@@ -1,0 +1,114 @@
+{
+    "appid"     : "48f16006-fee0-44fa-89b0-0106c0618527",
+    "name"    : "Generator",
+    "description" : "This app generates ingested sample data.",
+    "type": "generic",
+    "publisher": "Phantom",
+    "main_module" : "phgenerator_connector.pyc",
+    "app_version": "1.0.47",
+    "utctime_updated": "2017-01-26T18:44:23.000000Z",
+    "package_name": "phantom_generator",
+    "product_vendor": "Generic",
+    "product_name": "Generator",
+    "product_version_regex": ".*",
+    "min_phantom_version": "1.2.236",
+    "logo": "phantom.png",
+    "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
+    "configuration": {
+      "create_containers": {
+        "data_type": "numeric",
+        "order": 1,
+        "description": "Events to generate",
+        "value": 10,
+        "required": true
+      },
+      "create_artifacts": {
+        "data_type": "numeric",
+        "order": 2,
+        "description": "Artifacts per event to generate",
+        "value": 10,
+        "required": true
+      },
+      "container_prefix": {
+        "data_type": "string",
+        "description": "Event name prefix",
+        "order": 3,
+        "required": false
+      },
+      "artifact_prefix": {
+        "data_type": "string",
+        "description": "Artifact name prefix",
+        "order": 4,
+        "required": false
+      },
+      "artifact_label": {
+        "data_type": "string",
+        "description": "Artifact label",
+        "order": 5,
+        "required": false
+      },
+      "container_tag": {
+        "data_type": "string",
+        "description": "Tag to add to generated event containers",
+        "order": 6,
+        "required": false
+      },
+      "artifact_tag": {
+        "data_type": "string",
+        "description": "Tag to add to generated artifacts",
+        "order": 7,
+        "required": false
+      },
+      "source_data_file": {
+        "data_type": "string",
+        "description": "Artifact Data File (defaults to built in)",
+        "order": 8,
+        "required": false
+      },
+        "min_cef_per_artifact": {
+        "data_type": "numeric",
+        "order": 9,
+        "description": "Min data lines per artifact",
+        "value": 2,
+        "required": false
+      },
+        "max_cef_per_artifact": {
+        "data_type": "numeric",
+        "order": 10,
+        "description": "Max data lines per artifact",
+        "value": 8,
+        "required": false
+      },
+      "source_name_file": {
+        "data_type": "string",
+        "description": "Event Name File (defaults to built in)",
+        "order": 11,
+        "required": false
+      }
+    },
+    "actions": [
+      {
+        "action": "on poll",
+        "description": "Callback action for the on_poll ingest functionality.",
+        "type": "ingest",
+        "identifier": "on_poll",
+        "read_only": true,
+        "parameters": {
+          "container_count": {
+            "data_type": "numeric",
+            "description": "Number of events to generate",
+            "required": false,
+            "value": null
+          },
+          "artifact_count": {
+            "data_type": "numeric",
+            "description": "Number of artifacts to generate per event",
+            "required": false,
+            "value": null
+          }
+        },
+        "output": [],
+        "versions":"EQ(*)"
+      }
+    ]
+}

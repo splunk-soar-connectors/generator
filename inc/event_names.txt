@@ -1,0 +1,17 @@
+Code Yellow
+Code Fuchsia
+Code Red
+Code Silver
+Code Gray
+Code Olive
+Code Purple
+Code Maroon
+Code Aqua
+Code Lime
+Code Teal
+Code Green
+Code Blue
+Code Navy
+Code Black
+Code Cyan
+Code Magenta

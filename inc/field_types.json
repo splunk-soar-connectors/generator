@@ -1,0 +1,16 @@
+{
+	"fieldtypes": {
+	  "int": { "description": "integer", "source": "generated", "values": ["random_integer"] },
+	  "timestamp_iso8601": { "description": "iso 8601 formatted timestamp", "source": "generated", "values": ["timestamp_iso8601"] },
+	  "json_custom": { "description": "custom json data field", "source": "generated", "values": ["json_custom"] },
+	  "string": { "description": "string", "source": "generated", "values": ["random_string"] },
+	  "string_unique": { "description": "string which should be unique in data entry cases", "source": "generated", "values": ["random_string"] },
+	  "email": { "description": "string which should be unique in data entry cases", "source": "generated", "values": ["random_email_address"] },
+	  "string_userid": { "description": "phantom userid", "source": "generated", "values": ["phantom_userid"] },
+	  "string_severity": { "description": "phantom severity definitions", "source": "static", "values": ["low", "medium", "high"] },
+	  "string_status": { "description": "phantom status definitions", "source": "static", "values": ["new", "open", "closed"] },
+	  "string_sensitivity": { "description": "phantom sensitivity definitions", "source": "static", "values": ["white", "green", "amber", "red"] },
+	  "json_asset_configuration": { "description":  "phantom key value pairs for asset configuration per app", "source": "generated", "values": ["app_asset_configuration"] },
+	  "json_owner": { "description":  "phantom user owners and voting json content", "source": "generated", "values": ["phantom_asset_owners"] }
+	  }
+}

@@ -26,7 +26,6 @@ FILE_CONTAINER_DEF = 'inc/container_definitions.json'
 FILE_ARTIFACT_DEF = 'inc/artifact_definitions.json'
 # Artifact names provides a search criteria to determine based on cef field keys what an artifact name should be.
 FILE_ARTIFACT_NAMES = 'inc/artifact_naming.json'
-# event names are currently the container names that are used randomly if the artifact_dump file does not specify any via phantom_eventName key
 FILE_INCIDENT_NAMES = 'inc/event_names.txt'
 #
 GEN_CONTAINER_PREFIX = "Sample event"

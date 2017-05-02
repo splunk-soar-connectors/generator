@@ -11,13 +11,13 @@
 # of Phantom Cyber.
 #
 # --
-import datetime, sys
+import datetime
 from collections import defaultdict
 import random, string
 import json
 from copy import deepcopy
-import time
-__version__ = '0.1b'
+# import time
+__version__ = '0.1c'
 
 # debug_level = "debug"
 # debug_level = "none"
@@ -174,7 +174,7 @@ class PhantomFieldGenerator(object):
         sample_dict[(''.join(random.sample(char_set * size, size)))] = (''.join(random.sample(char_set * size, size)))
         return sample_dict
 
-# FIXME: Finish this shit to handle > 255 IPs
+# FIXME: Finish this ---- to handle > 255 IPs
     def generate_sequential_ip_addr(self, quantity, seed_ipaddr='10.102.10.192'):
         ip_list = seed_ipaddr.split('.')
         newip_list = []

@@ -1,7 +1,7 @@
 # --
 # File: phgenerator_consts.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2016
+# Copyright (c) Phantom Cyber Corporation, 2014-2017
 #
 # This unpublished material is proprietary to Phantom Cyber.
 # All rights reserved. The methods and
@@ -24,10 +24,12 @@ FILE_CEF_SAMPLE = 'inc/cef_sample.json'
 FILE_FIELD_TYPES = 'inc/field_types.json'
 FILE_CONTAINER_DEF = 'inc/container_definitions.json'
 FILE_ARTIFACT_DEF = 'inc/artifact_definitions.json'
+# Artifact names provides a search criteria to determine based on cef field keys what an artifact name should be.
+FILE_ARTIFACT_NAMES = 'inc/artifact_naming.json'
 FILE_INCIDENT_NAMES = 'inc/event_names.txt'
 #
 GEN_CONTAINER_PREFIX = "Sample event"
-GEN_ARTIFACT_PREFIX = "Sample artifact"
+GEN_ARTIFACT_PREFIX = ""
 GEN_ARTIFACT_LABEL = "event"
 #
 GEN_CONTAINER_TAG = ""

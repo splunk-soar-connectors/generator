@@ -16,7 +16,6 @@
 import os
 import time
 from datetime import timedelta
-
 import phantom.app as phantom
 from phantom.app import BaseConnector
 
@@ -25,6 +24,28 @@ from phgenerator_consts import *
 
 
 class GeneratorConnector(BaseConnector):
+
+    # code that decides what to name artifacts based on their cef content keys
+    def _get_artifact_name(self, artifact_item):
+        # self.artifactnames_filein
+        try:
+            # self.debug_print("ART FILE: {} - {}".format(self.artifactnames_filein, type(self.artifactnames_filein)))
+            for artitem in self.artifactnames_filein:
+                # .debug_print('ARTITEM: {} - {} - {}'.format(artitem, type(artitem), len(artitem)))
+                # self.debug_print('ARTITEM2: {} - {}'.format(artifact_item['cef'], type(artifact_item['cef'])))
+                for key, value in artitem.iteritems():
+                    self.debug_print('LOOP - {} - {}'.format(key, value))
+                    for artkey, artvalue in (artifact_item.get('cef', {})).iteritems():
+                        if artvalue.strip() == "":
+                            continue
+                        self.debug_print('LOOP2 - {} - {}'.format(key, artkey))
+                        if key.lower() in artkey.lower():
+                            self.debug_print('LOOPMATCH')
+                            self.debug_print("ART VALUE: {}".format(value))
+                            return value
+        except Exception as e:
+            self.debug_print("Artifact Exception: {}".format(e))
+        return 'Unknown Artifact'  # default name if none found
 
     # code that pulls event names from a data file and returns a list of values
     def _get_random_names(self, file_in):
@@ -133,6 +154,7 @@ class GeneratorConnector(BaseConnector):
             artifactdef_filein = self._getfile(useinc_filepath + FILE_ARTIFACT_DEF)
             cef_sample_json = self._load_file_json(useinc_filepath + FILE_CEF_SAMPLE)
             sample_dictlist = self._load_file_dicts(artifact_datafile)
+            self.artifactnames_filein = self._load_file_json(useinc_filepath + FILE_ARTIFACT_NAMES)
         except Exception as e:
             # self.save_progress("exception in file load: {}".format(e))
             # self.debug_print("exception in file load: {}".format(e))
@@ -217,7 +239,7 @@ class GeneratorConnector(BaseConnector):
             if self.is_poll_now():
                 self.send_progress("Adding artifacts to container: {}".format(cid))
             for artifact_count, artifact_item in enumerate(generated_data['artifact']):
-                artifact_item['name'] = artifact_prefix + " " + str(time.time())
+                artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
                 # self.debug_print("entering creation of artifacts")
                 artifact_item['container_id'] = cid
                 if (artifact_count + 1) == len(generated_data['artifact']):

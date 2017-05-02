@@ -1,1 +1,4 @@
 *.py
+.git*
+.project
+.pyproject

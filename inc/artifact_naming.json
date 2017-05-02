@@ -1,0 +1,16 @@
+[ 
+    {"file": "File Artifact"},
+    {"mail": "Email Artifact"},
+    {"user" : "User Artifact"},
+    {"service" : "Service Artifact"},
+    {"dns" : "Domain Artifact"},
+    {"address" : "IP Artifact"},
+    {"url" : "URL Artifact"},
+    {"host" : "Host Artifact"},
+    {"mac" : "MAC Artifact"},
+    {"domain" : "Domain Artifact"},
+    {"src" : "IP Artifact"},
+    {"dst" : "IP Artifact"},
+    {"application" : "Application Artifact"},
+    {"interface" : "Endpoint Artifact"}
+]

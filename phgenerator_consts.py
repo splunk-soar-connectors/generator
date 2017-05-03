@@ -29,7 +29,7 @@ FILE_ARTIFACT_NAMES = 'inc/artifact_naming.json'
 # event names are currently the container names that are used randomly if the artifact_dump file does not specify any via phantom_eventName key
 FILE_INCIDENT_NAMES = 'inc/event_names.txt'
 #
-GEN_CONTAINER_PREFIX = "Sample event"
+GEN_CONTAINER_PREFIX = "Detected event"
 GEN_ARTIFACT_PREFIX = ""
 GEN_ARTIFACT_LABEL = "event"
 #
@@ -41,9 +41,10 @@ GEN_ABSOLUTE_MIN_CONTAINERS = 1
 GEN_ABSOLUTE_MAX_ARTIFACTS = 1000
 GEN_ABSOLUTE_MIN_ARTIFACTS = 1
 #
-# generate cef artifacts with between 2 and 8 randomized keys.
+# generate cef artifacts with between 2 and 4 randomized keys.
+# limited to 2-4 because it generates more varied data than just file events this way.
 GEN_CEF_MIN_FIELDSAMPLES = 2
-GEN_CEF_MAX_FIELDSAMPLES = 8
+GEN_CEF_MAX_FIELDSAMPLES = 4
 #
 DUE_SLA_DELTA_MIN = 30
 DUE_SLA_DELTA_MAX = 60

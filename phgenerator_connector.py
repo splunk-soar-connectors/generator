@@ -34,17 +34,17 @@ class GeneratorConnector(BaseConnector):
                 # .debug_print('ARTITEM: {} - {} - {}'.format(artitem, type(artitem), len(artitem)))
                 # self.debug_print('ARTITEM2: {} - {}'.format(artifact_item['cef'], type(artifact_item['cef'])))
                 for key, value in artitem.iteritems():
-                    self.debug_print('LOOP - {} - {}'.format(key, value))
+                    # self.debug_print('LOOP - {} - {}'.format(key, value))
                     for artkey, artvalue in (artifact_item.get('cef', {})).iteritems():
                         if artvalue.strip() == "":
                             continue
-                        self.debug_print('LOOP2 - {} - {}'.format(key, artkey))
+                        # self.debug_print('LOOP2 - {} - {}'.format(key, artkey))
                         if key.lower() in artkey.lower():
-                            self.debug_print('LOOPMATCH')
-                            self.debug_print("ART VALUE: {}".format(value))
+                            # self.debug_print('LOOPMATCH')
+                            # self.debug_print("ART VALUE: {}".format(value))
                             return value
         except Exception as e:
-            self.debug_print("Artifact Exception: {}".format(e))
+            self.save_progress("get_artifact_name Artifact Exception: {}".format(e))
         return 'Unknown Artifact'  # default name if none found
 
     # code that pulls event names from a data file and returns a list of values
@@ -230,12 +230,25 @@ class GeneratorConnector(BaseConnector):
         #
         for container_item in generated_data['container']:
             container_item['name'] = container_item['name'] + " " + str(random.choice(event_names))
-            cstatus, cmsg, cid = self.save_container(container_item)
-            container_count += 1
+            # prev cid location
             if self.is_poll_now():
-                self.send_progress("Generating artifacts for event: {}".format(cid))
+                self.send_progress("Generating artifacts for event.")
             # generate new artifacts for this container
             generated_data = pfg.create_many('sequential', domax_artifacts, artifact='random')
+            found_event_name = None
+            for artifact_count, artifact_item in enumerate(generated_data['artifact']):
+                found_event_name = artifact_item.get('cef', {}).get('phantom_eventName', None)
+                if found_event_name:
+                    # self.debug_print('Found eventName: {}'.format(found_event_name))
+                    container_item['name'] = found_event_name.strip()
+                    break
+                # else:
+                #    self.debug_print('No eventName: {}'.format(found_event_name))
+            # track if we've already put an event name on the container.
+            # this is so we can drop any other artifacts that contain event names.
+            added_event_name = False
+            cstatus, cmsg, cid = self.save_container(container_item)
+            container_count += 1
             if self.is_poll_now():
                 self.send_progress("Adding artifacts to container: {}".format(cid))
             for artifact_count, artifact_item in enumerate(generated_data['artifact']):
@@ -244,7 +257,19 @@ class GeneratorConnector(BaseConnector):
                 artifact_item['container_id'] = cid
                 if (artifact_count + 1) == len(generated_data['artifact']):
                     artifact_item['run_automation'] = True
-                astatus, amsg, aid = self.save_artifact(artifact_item)
+                # if we've found an event name, and this is an artifact with an event name when we've already added one, lets not add more.
+                is_event_name = artifact_item.get('cef', {}).get('phantom_eventName')
+                if is_event_name == "" or not is_event_name:
+                    is_event_name = False
+                if ((found_event_name) and ((added_event_name) and is_event_name)):
+                    pass
+                else:
+                    if is_event_name:
+                        added_event_name = True
+                    # remove the event name so it doesnt get added as cef data.
+                    if artifact_item.get('cef', {}).get('phantom_eventName'):
+                        del artifact_item['cef']['phantom_eventName']
+                    astatus, amsg, aid = self.save_artifact(artifact_item)
                 # if (artifact_count + 1) == len(generated_data['artifact']):
                 #    self.debug_print("Set true run_auto on artifact: {}".format(aid))
                 # artifact_count += 1

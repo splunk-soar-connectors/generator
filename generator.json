@@ -76,7 +76,7 @@
         "data_type": "numeric",
         "order": 10,
         "description": "Max data lines per artifact",
-        "value": 8,
+        "value": 4,
         "required": false
       },
       "source_name_file": {

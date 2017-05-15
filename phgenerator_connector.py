@@ -235,54 +235,43 @@ class GeneratorConnector(BaseConnector):
                 self.send_progress("Generating artifacts for event.")
             # generate new artifacts for this container
             generated_data = pfg.create_many('sequential', domax_artifacts, artifact='random')
-            found_event_name = None
+            added_event_name = False
+            # self.debug_print('DEBUG2: Generated type: {}'.format(type(generated_data)))
+            ready_artifacts = []
             for artifact_count, artifact_item in enumerate(generated_data['artifact']):
                 found_event_name = artifact_item.get('cef', {}).get('phantom_eventName', None)
-                if found_event_name:
-                    # self.debug_print('Found eventName: {}'.format(found_event_name))
-                    container_item['name'] = found_event_name.strip()
-                    break
-                # else:
-                #    self.debug_print('No eventName: {}'.format(found_event_name))
-            # track if we've already put an event name on the container.
-            # this is so we can drop any other artifacts that contain event names.
-            added_event_name = False
+                if found_event_name and found_event_name != "":
+                    if not added_event_name:
+                        # self.debug_print('DEBUG2: Found eventName: {}'.format(found_event_name))
+                        container_item['name'] = found_event_name.strip()
+                        added_event_name = True
+                        ready_artifacts.append(artifact_item)
+                        del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
+                    else:  # if its an event name, and we've already found one, we don't want to add this one.
+                        pass
+                else:  # if its not an event name, we can add it.
+                    ready_artifacts.append(artifact_item)
+            if len(ready_artifacts) > 0:  # make the very last artifact we've added run automation.
+                    ready_artifacts[-1]['run_automation'] = True
+            # start posting, save the container, then run through artifacts filtered above.
             cstatus, cmsg, cid = self.save_container(container_item)
             container_count += 1
             if self.is_poll_now():
                 self.send_progress("Adding artifacts to container: {}".format(cid))
-            for artifact_count, artifact_item in enumerate(generated_data['artifact']):
+            # DEBUG
+            # multiples = False
+            # if len(ready_artifacts) > 1:
+            #    self.debug_print('DEBUG3: Artifacts: {}'.format(len(ready_artifacts)))
+            #    multiples = True
+            # END DEBUG
+            for artifact_count, artifact_item in enumerate(ready_artifacts):
                 artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
-                # self.debug_print("entering creation of artifacts")
                 artifact_item['container_id'] = cid
-                if (artifact_count + 1) == len(generated_data['artifact']):
-                    artifact_item['run_automation'] = True
-                # if we've found an event name, and this is an artifact with an event name when we've already added one, lets not add more.
-                is_event_name = artifact_item.get('cef', {}).get('phantom_eventName')
-                if is_event_name == "" or not is_event_name:
-                    is_event_name = False
-                if ((found_event_name) and ((added_event_name) and is_event_name)):
-                    pass
-                else:
-                    if is_event_name:
-                        added_event_name = True
-                    # remove the event name so it doesnt get added as cef data.
-                    if artifact_item.get('cef', {}).get('phantom_eventName'):
-                        del artifact_item['cef']['phantom_eventName']
-                    astatus, amsg, aid = self.save_artifact(artifact_item)
-                # if (artifact_count + 1) == len(generated_data['artifact']):
-                #    self.debug_print("Set true run_auto on artifact: {}".format(aid))
-                # artifact_count += 1
+                astatus, amsg, aid = self.save_artifact(artifact_item)
+                # DEBUG:
+                # if multiples:
+                #    self.debug_print('DEBUG2: CID: {} - AID: {} - Run: {} - Artifact: {}'.format(cid, aid, artifact_item['run_automation'], artifact_item))
             generated_data.pop("artifact", None)  # remove the used artifacts
-
-        # if (phantom.is_fail(ret_val)):
-        #    return self.set_status(ret_val, ret_msg)
-
-        # container_count = int(param.get(phantom.APP_JSON_CONTAINER_COUNT, IMAP_DEFAULT_CONTAINER_COUNT))
-
-        # if (container_count < len(email_ids)):
-        #    self.save_progress("Trimming emails to process to {0}".format(container_count))
-        #    email_ids = email_ids[-container_count:]
 
         return self.set_status(phantom.APP_SUCCESS)
 

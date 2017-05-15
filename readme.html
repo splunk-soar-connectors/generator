@@ -12,7 +12,9 @@ of Phantom Cyber.
 -->
 
     <p>
-    This app will generate sample, semi-random data to be ingested at regular polling intervals. To configure, create a new asset, and choose vendor "Generic" and product "Generator".
+    This app will generate sample, semi-random data to be ingested at regular polling intervals. To configure, create a new asset, and choose vendor "Generic" and product "Generator".<br>
+    <b>Generator App v2.0+ introduced a significant behavioral change and no longer guarantees a specific number of artifacts will be added, if the event data file contains event names.</b><br>
+    See the section below on custom data source files, it is possible to create an asset with the prior Generator App behavior.
     </p>
     <p>
 <h2>Poll Now</h2>
@@ -26,6 +28,7 @@ of Phantom Cyber.
 <h2>Generated artifact modification: Custom data source files</h2>
     <p>
     Create a file in <b>/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/</b> with a useful name, such as "newdata.txt". If the path doesn't exist, make sure to complete an initial "Poll Now" with the app to initialize it.<br>
+    <b>If you want to revert to Generator App v1 creation behavior, copy artifact_dump_v1.txt to the above path, set the file permissions, and create an asset that uses this filename for the artifact data file.</b><br>
     Ensure that the file permissions are correct: chown phantom-worker.phantom.<Br>
     In your generator asset's "asset settings" configuration, set the field "Artifact Data File" to the filename, ie "newdata.txt".
     The file should contain on each line a valid json dictionary containing CEF sample data.  Items are chosen from this file to fill the various CEF fields.  If you want to make sure specific CEF fields appear in an artifact together, simply create a json dictionary on one line that contains all the CEF fields and their values.

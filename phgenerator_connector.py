@@ -103,7 +103,7 @@ class GeneratorConnector(BaseConnector):
         #
         if self.is_poll_now():
             self.save_progress(
-                "Generating {} events with {} artifacts each".format(domax_containers, domax_artifacts))
+                "Generating {} events with up to {} randomized artifacts each".format(domax_containers, domax_artifacts))
         artifact_label = config.get('artifact_label', GEN_ARTIFACT_LABEL)
         artifact_prefix = config.get('artifact_prefix', GEN_ARTIFACT_PREFIX)
         container_prefix = config.get('container_prefix', GEN_CONTAINER_PREFIX)

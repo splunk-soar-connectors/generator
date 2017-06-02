@@ -13,8 +13,8 @@ of Phantom Cyber.
 
     <p>
     This app will generate sample, semi-random data to be ingested at regular polling intervals. To configure, create a new asset, and choose vendor "Generic" and product "Generator".<br>
-    <b>Generator App v2.0+ introduced a significant behavioral change and no longer guarantees a specific number of artifacts will be added, if the event data file contains event names.</b><br>
-    See the section below on custom data source files, it is possible to create an asset with the prior Generator App behavior.
+    <b>Generator App v2.0+ introduced a significant behavioral change and no longer guarantees a specific number of artifacts will be added, if the event data file contains event names. See included data files below.
+    To maintain Generator App v1 behavior, see the section below on custom data source files and create an asset using the v1 data file format.</b><br>
     </p>
     <p>
 <h2>Poll Now</h2>
@@ -25,37 +25,49 @@ of Phantom Cyber.
     <p>
     This allows artifacts and events to be generated at the specified polling intervals automatically. 
     </p>
+<h2>Included data files:</h2>
+	<p>
+	<br>Included data files are shipped with the app; you can use these as samples to create your own:
+    <br>Default (contains event names): <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/artifact_dump.txt">artifact_dump.txt</a> 
+    <br>Generator version 1 file: <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/artifact_dump_v1.txt">artifact_dump_v1.txt</a> 
+    <br>Generator version 2 file (copy of the default above): <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/artifact_dump_v2.txt">artifact_dump_v2.txt</a> 
+	</p>
 <h2>Generated artifact modification: Custom data source files</h2>
     <p>
     Create a file in <b>/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/</b> with a useful name, such as "newdata.txt". If the path doesn't exist, make sure to complete an initial "Poll Now" with the app to initialize it.<br>
     <b>If you want to revert to Generator App v1 creation behavior, copy artifact_dump_v1.txt to the above path, set the file permissions, and create an asset that uses this filename for the artifact data file.</b><br>
-    Ensure that the file permissions are correct: chown phantom-worker.phantom.<Br>
+    Ensure that the file permissions are correct: chown -R phantom-worker.phantom /opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/<Br>
     In your generator asset's "asset settings" configuration, set the field "Artifact Data File" to the filename, ie "newdata.txt".
     The file should contain on each line a valid json dictionary containing CEF sample data.  Items are chosen from this file to fill the various CEF fields.  If you want to make sure specific CEF fields appear in an artifact together, simply create a json dictionary on one line that contains all the CEF fields and their values.
     If you want to add more random data without correlating it to other CEF fields just add a simple json dictionary with one CEF field and its value.
     <br>
-    <br>Example/default data file: <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/artifact_dump.txt">artifact_dump.txt</a> 
     </p>
     <p><b>Correlated data example (all three CEF fields will randomly appear in an artifact, possibly with additional generated CEF data):</b></p>
     <pre>{"cs1": "30968", "cs1Label": "asn", "destinationAddress": "77.221.140.99"}
     </pre>
+    <br>
     <p><b>Simple data example (the defined CEF field will randomly appear in an artifact, possibly with other generated CEF data):</b>    </p>
     <pre>{"destinationAddress": "253.207.67.115"}
     </pre>
+    <br>
     <p><b>Adding a key value of phantom_eventName will allow the setting of the event name (container) within Phantom. This field is not added to the cef data:</b></p>
+	<p><i>This disables randomized event names (see below), since the data set includes event names.</i></p>
     <pre>{"phantom_eventName": "Variant of Win32/GameHack.ARC","fileHash": "31b72e15b9a1bd9128ee1e780af4ede1", "fileName": "WebUsko.exe"}
     </pre>
+    <br>
     <p><b>If phantom_eventName is found, the configured event name prefix will be ignored, and to avoid invalidating data any other artifacts with a phantom_eventName field will not be added to the event.</b></p>
 <h2>Generated artifact modification: Data lines per artifact</h2>
 	<p>
 	The Min/Max data lines per artifact parameter allows you more control over combinations of CEF fields placed into an artifact. Generator will try to create artifacts using a random number (between min and max) of lines in the selected source data file.  As described above, each line can contain one or more CEF fields.
 	</p>
+	<br>
 <h2>Modifying randomized event (container) names</h2>
+<p><i>Applies only when using a Generator version 1 formatted data file.</i></p>
     <p>
     Create a file in <b>/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/</b> with a useful name, such as "event_names.txt". If the path doesn't exist, make sure to complete an initial "Poll Now" with the app to initialize it.<br>
     Ensure that the file permissions are correct: chown phantom-worker.phantom.<Br>
     In your generator asset's "asset settings" configuration, set the field "Event Name File" to the filename, ie "event_names.txt".
     The file should contain a list of phrases or words that you would like the app to randomly pull from in order to have more selectable event (container) names that are specific to your needs.
     <br>
-    <br>Example/default data file: <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/event_names.txt">event_names.txt</a>
+    <br>Default data file: <a href="/app_resource/generator_48f16006-fee0-44fa-89b0-0106c0618527/inc/event_names.txt">event_names.txt</a>
     </p>

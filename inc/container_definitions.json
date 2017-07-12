@@ -6,7 +6,6 @@
   "due_time": "timestamp_iso8601",
   "end_time": "timestamp_iso8601",
   "ingest_connector_id": "int",
-  "label": "string_lower",
   "name": "string_lower",
   "owner_id": "string_userid",
   "sensitivity": "string_sensitivity",

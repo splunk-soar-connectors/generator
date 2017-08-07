@@ -231,8 +231,8 @@ class GeneratorConnector(BaseConnector):
         for container_item in generated_data['container']:
             container_item['name'] = container_item['name'] + " " + str(random.choice(event_names))
             # prev cid location
-            if self.is_poll_now():
-                self.send_progress("Generating artifacts for event.")
+            # if self.is_poll_now():
+            #     self.send_progress("Generating artifacts for event.")
             # generate new artifacts for this container
             generated_data = pfg.create_many('sequential', domax_artifacts, artifact='random')
             added_event_name = False

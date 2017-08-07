@@ -245,32 +245,26 @@ class GeneratorConnector(BaseConnector):
                         # self.debug_print('DEBUG2: Found eventName: {}'.format(found_event_name))
                         container_item['name'] = found_event_name.strip()
                         added_event_name = True
+                        artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
                         ready_artifacts.append(artifact_item)
                         del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                     else:  # if its an event name, and we've already found one, we don't want to add this one.
                         pass
                 else:  # if its not an event name, we can add it.
+                    artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
                     ready_artifacts.append(artifact_item)
             if len(ready_artifacts) > 0:  # make the very last artifact we've added run automation.
                     ready_artifacts[-1]['run_automation'] = True
             # start posting, save the container, then run through artifacts filtered above.
+            container_item['artifacts'] = ready_artifacts
+
+            with open('/tmp/container.txt', 'w') as outfile:
+                json.dump(container_item, outfile)
+
             cstatus, cmsg, cid = self.save_container(container_item)
             container_count += 1
             if self.is_poll_now():
-                self.send_progress("Adding artifacts to container: {}".format(cid))
-            # DEBUG
-            # multiples = False
-            # if len(ready_artifacts) > 1:
-            #    self.debug_print('DEBUG3: Artifacts: {}'.format(len(ready_artifacts)))
-            #    multiples = True
-            # END DEBUG
-            for artifact_count, artifact_item in enumerate(ready_artifacts):
-                artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
-                artifact_item['container_id'] = cid
-                astatus, amsg, aid = self.save_artifact(artifact_item)
-                # DEBUG:
-                # if multiples:
-                #    self.debug_print('DEBUG2: CID: {} - AID: {} - Run: {} - Artifact: {}'.format(cid, aid, artifact_item['run_automation'], artifact_item))
+                self.send_progress("Added to container: {}".format(cid))
             generated_data.pop("artifact", None)  # remove the used artifacts
 
         return self.set_status(phantom.APP_SUCCESS)

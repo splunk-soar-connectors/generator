@@ -15,12 +15,14 @@
 # Phantom imports
 import os
 import time
+import random
 from datetime import timedelta
 import phantom.app as phantom
 from phantom.app import BaseConnector
 
 from PhantomFieldGenerator import *
 from phgenerator_consts import *
+from test.test_sax import start
 
 
 class GeneratorConnector(BaseConnector):
@@ -89,6 +91,27 @@ class GeneratorConnector(BaseConnector):
         domax_artifacts = min(domax_artifacts, GEN_ABSOLUTE_MAX_ARTIFACTS)
         domax_containers = max(domax_containers, GEN_ABSOLUTE_MIN_CONTAINERS)
         domax_artifacts = max(domax_artifacts, GEN_ABSOLUTE_MIN_ARTIFACTS)
+        #
+        artifact_count_override = config.get('artifact_count_override', False)
+        randomize_container_status = config.get('randomize_container_status', False)
+        #
+        ####
+        # event owner range assigns a random event owner
+        event_owner_range = config.get('event_owner_range', '0-0')
+        randomize_event_owners = False
+        try:
+            start_owner_id = int(event_owner_range.strip().split('-')[0])
+            end_owner_id = int(event_owner_range.strip().split('-')[1])
+            randomize_event_owners = True
+        except:
+            start_owner_id = 0
+            end_owner_id = 0
+        if start_owner_id == 0 or end_owner_id == 0:
+            randomize_event_owners = False
+        if end_owner_id < start_owner_id:
+            randomize_event_owners = False
+        #
+        ####
         #
         if self.is_poll_now():
             self.save_progress(
@@ -170,7 +193,8 @@ class GeneratorConnector(BaseConnector):
         #
         assetid = self.get_asset_id()
         pfg.field_override('modify', 'container', 'asset_id', assetid)
-        pfg.field_override('modify', 'container', 'status', 'new')
+        if not randomize_container_status:
+            pfg.field_override('modify', 'container', 'status', 'new')
         pfg.field_override('delete', 'container', 'close_time')
         pfg.field_override('delete', 'container', 'owner_id')
         pfg.field_override('modify', 'artifact', 'label', artifact_label)
@@ -185,6 +209,8 @@ class GeneratorConnector(BaseConnector):
         if artifact_tag != "":
             pfg.field_override('modify', 'artifact', 'tags', artifact_tag)
         if self.is_poll_now():
+            self.send_progress("Randomizing owners: {}".format(randomize_event_owners))
+            self.send_progress("Randomizing container status: {}".format(randomize_container_status))
             self.send_progress("Generating {} events".format(domax_containers))
         generated_data = pfg.create_many('sequential', domax_containers, container='random')
         container_count = 0
@@ -212,6 +238,9 @@ class GeneratorConnector(BaseConnector):
                         ready_artifacts.append(artifact_item)
                         del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                     else:  # if its an event name, and we've already found one, we don't want to add this one.
+                        if artifact_count_override:
+                            ready_artifacts.append(artifact_item)
+                            del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.                            
                         pass
                 else:  # if its not an event name, we can add it.
                     artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
@@ -220,6 +249,12 @@ class GeneratorConnector(BaseConnector):
                     ready_artifacts[-1]['run_automation'] = True
             # start posting, save the container, then run through artifacts filtered above.
             container_item['artifacts'] = ready_artifacts
+            #
+            ####
+            ## random event owner
+            if randomize_event_owners:
+                container_item['owner_id'] = random.randint(start_owner_id, end_owner_id)
+            ####
             # For debugging only
             # with open('/tmp/container.txt', 'w') as outfile:
             #    json.dump(container_item, outfile)

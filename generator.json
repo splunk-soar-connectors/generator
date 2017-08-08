@@ -24,7 +24,7 @@
       },
       "create_artifacts": {
         "data_type": "numeric",
-        "order": 2,
+        "order": 5,
         "description": "Artifacts per event to generate",
         "value": 10,
         "required": true
@@ -32,49 +32,76 @@
       "container_prefix": {
         "data_type": "string",
         "description": "Event name prefix",
+        "order": 2,
+        "required": false
+      },
+      "artifact_count_override": {
+        "data_type": "boolean",
+        "description": "Force exact artifact count",
+        "order": 8,
+        "default": false, 
+        "required": false
+      },
+      "randomize_container_status": {
+        "data_type": "boolean",
+        "description": "Randomize event status",
+        "default": false, 
+        "order": 4,
+        "required": false
+      },
+      "event_owner_range": {
+        "data_type": "string",
+        "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
+        "value": "0-0",
         "order": 3,
         "required": false
       },
       "artifact_prefix": {
         "data_type": "string",
         "description": "Artifact name prefix",
-        "order": 4,
+        "order": 6,
+        "required": false
+      },
+      "ph2": {
+        "data_type": "ph",
+        "description": "a",
+        "order": 7,
         "required": false
       },
       "artifact_label": {
         "data_type": "string",
         "description": "Artifact label",
-        "order": 5,
+        "order": 9,
         "required": false
       },
       "container_tag": {
         "data_type": "string",
         "description": "Tag to add to generated event containers",
-        "order": 6,
+        "order": 10,
         "required": false
       },
       "artifact_tag": {
         "data_type": "string",
         "description": "Tag to add to generated artifacts",
-        "order": 7,
+        "order": 11,
         "required": false
       },
       "source_data_file": {
         "data_type": "string",
         "description": "Artifact Data File (defaults to built in)",
-        "order": 8,
+        "order": 12,
         "required": false
       },
         "min_cef_per_artifact": {
         "data_type": "numeric",
-        "order": 9,
+        "order": 13,
         "description": "Min data lines per artifact",
         "value": 2,
         "required": false
       },
         "max_cef_per_artifact": {
         "data_type": "numeric",
-        "order": 10,
+        "order": 14,
         "description": "Max data lines per artifact",
         "value": 4,
         "required": false
@@ -82,7 +109,7 @@
       "source_name_file": {
         "data_type": "string",
         "description": "Event Name File (defaults to built in)",
-        "order": 11,
+        "order": 15,
         "required": false
       }
     },

@@ -113,8 +113,13 @@ class GeneratorConnector(BaseConnector):
         ####
         #
         if self.is_poll_now():
-            self.save_progress(
-                "Generating {} events with up to {} randomized artifacts each".format(domax_containers, domax_artifacts))
+            if artifact_count_override:
+                self.save_progress("Forcing creation of {} artifacts per event.".format(domax_artifacts))
+            else:
+                self.save_progress("NOT forcing artifact count. Generating UP TO {} artifacts per event.".format(domax_artifacts))
+            self.save_progress("Randomizing owners: {}".format(randomize_event_owners))
+            self.save_progress("Randomizing container status: {}".format(randomize_container_status))
+            self.save_progress("Generating {} events.".format(domax_containers))
         artifact_label = config.get('artifact_label', GEN_ARTIFACT_LABEL)
         artifact_prefix = config.get('artifact_prefix', GEN_ARTIFACT_PREFIX)
         container_prefix = config.get('container_prefix', GEN_CONTAINER_PREFIX)
@@ -207,10 +212,6 @@ class GeneratorConnector(BaseConnector):
             pfg.field_override('modify', 'container', 'tags', container_tag)
         if artifact_tag != "":
             pfg.field_override('modify', 'artifact', 'tags', artifact_tag)
-        if self.is_poll_now():
-            self.send_progress("Randomizing owners: {}".format(randomize_event_owners))
-            self.send_progress("Randomizing container status: {}".format(randomize_container_status))
-            self.send_progress("Generating {} events".format(domax_containers))
         generated_data = pfg.create_many('sequential', domax_containers, container='random')
         container_count = 0
         # artifact_count = 0
@@ -260,7 +261,10 @@ class GeneratorConnector(BaseConnector):
             cstatus, cmsg, cid = self.save_container(container_item)
             container_count += 1
             if self.is_poll_now():
-                self.send_progress("Added to container: {}".format(cid))
+                if cid is None:
+                    self.save_progress("Failed to generate container. {}".format(cmsg))
+                else:
+                    self.send_progress("Added to container: {}".format(cid))
             generated_data.pop("artifact", None)  # remove the used artifacts
 
         return self.set_status(phantom.APP_SUCCESS)

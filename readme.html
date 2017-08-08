@@ -12,7 +12,7 @@ of Phantom Cyber.
 -->
 
     <p>
-    This app will generate sample, semi-random data to be ingested at regular polling intervals. To configure, create a new asset, and choose vendor "Generic" and product "Generator".
+    This app will generate sample, semi-random data to be ingested at regular polling intervals. Multiple assets can be created with differing configurations to produce multiple streams of generated data.
     </p>
     <p>
 <h2>Poll Now</h2>
@@ -24,8 +24,8 @@ of Phantom Cyber.
     This allows artifacts and events to be generated at the specified polling intervals automatically. 
     </p>
 <h2>Basic Asset Settings</h2>
-    <p><b>Events to generate:</b> When polling is enabled, generate this many events per poll.
-    <p><b>Randomize event status:</b> Default is unchecked, all events are created with status "New."  If checked, events will be created as "Resolved, Open, or New."</p>
+    <p><b>Events to generate:</b> When polling is enabled, generate this many events per poll.</p>
+    <p><b>Randomize event status:</b> Default is unchecked, all events are created with status "New".  If checked, events will be created as "Resolved", "Open", or "New".</p>
     <p><b>Artifacts per event to generate:</b> When polling is enabled, attempt to generate up to this many artifacts.  By default, artifacts that don't belong to the particular event will not be added.</p>
     <p><b>Force exact artifact count:</b> Default is unchecked, only artifacts related to the event will be added.  If checked, Generator will create the exact number of artifacts specified.</p>
     <p><b>Event owner ID range:</b> Default (0-0) creates events with no owners. Specify a range of User IDs on your instance (ie 2-5) and Generator will create events with those owners if they exist.  If the owner IDs do not exist, the events will fail to be added.</p>

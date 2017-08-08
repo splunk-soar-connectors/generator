@@ -22,7 +22,6 @@ from phantom.app import BaseConnector
 
 from PhantomFieldGenerator import *
 from phgenerator_consts import *
-from test.test_sax import start
 
 
 class GeneratorConnector(BaseConnector):

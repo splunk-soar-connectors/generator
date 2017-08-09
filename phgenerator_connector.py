@@ -206,7 +206,7 @@ class GeneratorConnector(BaseConnector):
         pfg.field_override('modify', 'artifact', 'name', artifact_prefix)
         pfg.field_override('modify', 'artifact', 'type', 'event')
         pfg.field_override('modify', 'container', 'description', container_prefix)
-        pfg.field_override('modify', 'artifact', 'run_automation', False)
+        pfg.field_override('delete', 'artifact', 'run_automation', False)  # PS-8501 don't put run automation flag in when using save_container.
         # allow tags to be added (maybe just one, unsure ;)
         if container_tag != "":
             pfg.field_override('modify', 'container', 'tags', container_tag)
@@ -245,8 +245,6 @@ class GeneratorConnector(BaseConnector):
                 else:  # if its not an event name, we can add it.
                     artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
                     ready_artifacts.append(artifact_item)
-            if len(ready_artifacts) > 0:  # make the very last artifact we've added run automation.
-                    ready_artifacts[-1]['run_automation'] = True
             # start posting, save the container, then run through artifacts filtered above.
             container_item['artifacts'] = ready_artifacts
             #

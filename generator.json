@@ -111,6 +111,22 @@
         "description": "Event Name File (defaults to built in)",
         "order": 15,
         "required": false
+      },
+      "event_severity": {
+        "data_type": "string",
+        "description": "Event Severity",
+        "order": 16,
+        "value_list": ["Random", "High", "Medium", "Low"],
+        "default": "Random",
+        "required": false
+      },
+      "event_sensitivity": {
+        "data_type": "string",
+        "description": "Event Sensitivity",
+        "order": 17,
+        "value_list": ["Random", "Red", "Amber", "Green", "White"],
+        "default": "Random",
+        "required": false
       }
     },
     "actions": [

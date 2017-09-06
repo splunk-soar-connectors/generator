@@ -93,6 +93,8 @@ class GeneratorConnector(BaseConnector):
         #
         artifact_count_override = config.get('artifact_count_override', False)
         randomize_container_status = config.get('randomize_container_status', False)
+        event_severity = config.get('event_severity', "Random")
+        event_sensitivity = config.get('event_sensitivity', "Random")
         #
         ####
         # event owner range assigns a random event owner
@@ -206,6 +208,15 @@ class GeneratorConnector(BaseConnector):
         pfg.field_override('modify', 'artifact', 'name', artifact_prefix)
         pfg.field_override('modify', 'artifact', 'type', 'event')
         pfg.field_override('modify', 'container', 'description', container_prefix)
+        #
+        ###
+        # PAPP-3109 Container severity and sensitivity options
+        if event_sensitivity != "Random":
+            pfg.field_override('modify', 'container', 'sensitivity', event_sensitivity.lower())
+        if event_severity != "Random":
+            pfg.field_override('modify', 'container', 'severity', event_severity.lower())
+        #
+        ###
         # pfg.field_override('delete', 'artifact', 'run_automation', False)  # PS-8501 don't put run automation flag in when using save_container.
         # allow tags to be added (maybe just one, unsure ;)
         if container_tag != "":

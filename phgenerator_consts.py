@@ -20,6 +20,7 @@ GEN_MAX_ARTIFACTS = 10
 # goes to /opt/phantom/apps/data/<app_id>/
 USER_INC_FILEPATH = '../data/generator_'
 FILE_ARTIFACT_DUMP = 'inc/artifact_dump.txt'
+FILE_ARTIFACT_EMPTY = 'inc/empty.txt'
 FILE_CEF_SAMPLE = 'inc/cef_sample.json'
 FILE_FIELD_TYPES = 'inc/field_types.json'
 FILE_CONTAINER_DEF = 'inc/container_definitions.json'

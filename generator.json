@@ -1,7 +1,7 @@
 {
     "appid": "48f16006-fee0-44fa-89b0-0106c0618527",
     "name": "Generator",
-    "description": "This app generates ingested sample data.",
+    "description": "This app generates ingested sample data",
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.pyc",
@@ -11,7 +11,7 @@
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.247",
+    "min_phantom_version": "3.0.251",
     "logo": "phantom.png",
     "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "configuration": {
@@ -143,7 +143,7 @@
     "actions": [
         {
             "action": "on poll",
-            "description": "Callback action for the on_poll ingest functionality.",
+            "description": "Callback action for the on_poll ingest functionality",
             "type": "ingest",
             "identifier": "on_poll",
             "read_only": true,

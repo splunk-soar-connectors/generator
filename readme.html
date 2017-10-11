@@ -55,6 +55,8 @@ of Phantom Cyber.
     <pre>{"destinationAddress": "253.207.67.115"}
     </pre>
     <br>
+    <p><b>Creating static event names with no real artifact data to be used as a generic cronjob event:</b></p>
+    <br>
     <p><b>Adding a key value of phantom_eventName will allow the setting of the event name (container) within Phantom. This field is not added to the cef data:</b></p>
 	<p><i>This disables randomized event names (see below), since the data set includes event names.</i></p>
     <pre>{"phantom_eventName": "Variant of Win32/GameHack.ARC","fileHash": "31b72e15b9a1bd9128ee1e780af4ede1", "fileName": "WebUsko.exe"}
@@ -66,8 +68,13 @@ of Phantom Cyber.
 	The Min/Max data lines per artifact parameter allows you more control over combinations of CEF fields placed into an artifact. Generator will try to create artifacts using a random number (between min and max) of lines in the selected source data file.  As described above, each line can contain one or more CEF fields.
 	</p>
 	<br>
+<h2>Creating static event (container) names without artifact data (useful for generic timed event triggering)</h2>
+	<p>
+	Set the artifact data file field in the asset to "inc/empty.txt" without the quotes. The event prefix name (required) becomes the static name for all events generated.
+	</p>
+	<br>	
 <h2>Modifying randomized event (container) names</h2>
-<p><i>Applies only when using a Generator version 1 formatted data file.</i></p>
+<p><i>This applies only when using a Generator version 1 formatted data file.</i></p>
     <p>
     Create a file in <b>/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/</b> with a useful name, such as "event_names.txt". If the path doesn't exist, make sure to complete an initial "Poll Now" with the app to initialize it.<br>
     Ensure that the file permissions are correct: chown phantom-worker.phantom.<Br>

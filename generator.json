@@ -1,157 +1,168 @@
 {
-    "appid"     : "48f16006-fee0-44fa-89b0-0106c0618527",
-    "name"    : "Generator",
-    "description" : "This app generates ingested sample data.",
+    "appid": "48f16006-fee0-44fa-89b0-0106c0618527",
+    "name": "Generator",
+    "description": "This app generates ingested sample data",
     "type": "generic",
     "publisher": "Phantom",
-    "main_module" : "phgenerator_connector.pyc",
-    "app_version": "2.0.11",
-    "utctime_updated": "2017-09-06T20:41:00.000000Z",
+    "main_module": "phgenerator_connector.pyc",
+    "app_version": "2.0.13",
+    "utctime_updated": "2017-10-11T23:58:51.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "3.0.247",
+    "min_phantom_version": "3.0.251",
     "logo": "phantom.png",
     "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "configuration": {
-      "create_containers": {
-        "data_type": "numeric",
-        "order": 1,
-        "description": "Events to generate",
-        "value": 10,
-        "required": true
-      },
-      "create_artifacts": {
-        "data_type": "numeric",
-        "order": 5,
-        "description": "Artifacts per event to generate",
-        "value": 10,
-        "required": true
-      },
-      "container_prefix": {
-        "data_type": "string",
-        "description": "Event name prefix",
-        "order": 2,
-        "required": false
-      },
-      "artifact_count_override": {
-        "data_type": "boolean",
-        "description": "Force exact artifact count",
-        "order": 8,
-        "default": false, 
-        "required": false
-      },
-      "randomize_container_status": {
-        "data_type": "boolean",
-        "description": "Randomize event status",
-        "default": false, 
-        "order": 4,
-        "required": false
-      },
-      "event_owner_range": {
-        "data_type": "string",
-        "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
-        "value": "0-0",
-        "order": 3,
-        "required": false
-      },
-      "artifact_prefix": {
-        "data_type": "string",
-        "description": "Artifact name prefix",
-        "order": 6,
-        "required": false
-      },
-      "ph2": {
-        "data_type": "ph",
-        "description": "a",
-        "order": 7,
-        "required": false
-      },
-      "artifact_label": {
-        "data_type": "string",
-        "description": "Artifact label",
-        "order": 9,
-        "required": false
-      },
-      "container_tag": {
-        "data_type": "string",
-        "description": "Tag to add to generated event containers",
-        "order": 10,
-        "required": false
-      },
-      "artifact_tag": {
-        "data_type": "string",
-        "description": "Tag to add to generated artifacts",
-        "order": 11,
-        "required": false
-      },
-      "source_data_file": {
-        "data_type": "string",
-        "description": "Artifact Data File (defaults to built in)",
-        "order": 12,
-        "required": false
-      },
+        "create_containers": {
+            "data_type": "numeric",
+            "order": 1,
+            "description": "Events to generate",
+            "value": 10,
+            "required": true
+        },
+        "create_artifacts": {
+            "data_type": "numeric",
+            "order": 5,
+            "description": "Artifacts per event to generate",
+            "value": 10,
+            "required": true
+        },
+        "container_prefix": {
+            "data_type": "string",
+            "description": "Event name prefix",
+            "order": 2,
+            "required": false
+        },
+        "artifact_count_override": {
+            "data_type": "boolean",
+            "description": "Force exact artifact count",
+            "order": 8,
+            "default": false,
+            "required": false
+        },
+        "randomize_container_status": {
+            "data_type": "boolean",
+            "description": "Randomize event status",
+            "default": false,
+            "order": 4,
+            "required": false
+        },
+        "event_owner_range": {
+            "data_type": "string",
+            "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
+            "value": "0-0",
+            "order": 3,
+            "required": false
+        },
+        "artifact_prefix": {
+            "data_type": "string",
+            "description": "Artifact name prefix",
+            "order": 6,
+            "required": false
+        },
+        "ph2": {
+            "data_type": "ph",
+            "description": "a",
+            "order": 7,
+            "required": false
+        },
+        "artifact_label": {
+            "data_type": "string",
+            "description": "Artifact label",
+            "order": 9,
+            "required": false
+        },
+        "container_tag": {
+            "data_type": "string",
+            "description": "Tag to add to generated event containers",
+            "order": 10,
+            "required": false
+        },
+        "artifact_tag": {
+            "data_type": "string",
+            "description": "Tag to add to generated artifacts",
+            "order": 11,
+            "required": false
+        },
+        "source_data_file": {
+            "data_type": "string",
+            "description": "Artifact Data File (defaults to built in)",
+            "order": 12,
+            "required": false
+        },
         "min_cef_per_artifact": {
-        "data_type": "numeric",
-        "order": 13,
-        "description": "Min data lines per artifact",
-        "value": 2,
-        "required": false
-      },
+            "data_type": "numeric",
+            "order": 13,
+            "description": "Min data lines per artifact",
+            "value": 2,
+            "required": false
+        },
         "max_cef_per_artifact": {
-        "data_type": "numeric",
-        "order": 14,
-        "description": "Max data lines per artifact",
-        "value": 4,
-        "required": false
-      },
-      "source_name_file": {
-        "data_type": "string",
-        "description": "Event Name File (defaults to built in)",
-        "order": 15,
-        "required": false
-      },
-      "event_severity": {
-        "data_type": "string",
-        "description": "Event Severity",
-        "order": 16,
-        "value_list": ["Random", "High", "Medium", "Low"],
-        "default": "Random",
-        "required": false
-      },
-      "event_sensitivity": {
-        "data_type": "string",
-        "description": "Event Sensitivity",
-        "order": 17,
-        "value_list": ["Random", "Red", "Amber", "Green", "White"],
-        "default": "Random",
-        "required": false
-      }
+            "data_type": "numeric",
+            "order": 14,
+            "description": "Max data lines per artifact",
+            "value": 4,
+            "required": false
+        },
+        "source_name_file": {
+            "data_type": "string",
+            "description": "Event Name File (defaults to built in)",
+            "order": 15,
+            "required": false
+        },
+        "event_severity": {
+            "data_type": "string",
+            "description": "Event Severity",
+            "order": 16,
+            "value_list": [
+                "Random",
+                "High",
+                "Medium",
+                "Low"
+            ],
+            "default": "Random",
+            "required": false
+        },
+        "event_sensitivity": {
+            "data_type": "string",
+            "description": "Event Sensitivity",
+            "order": 17,
+            "value_list": [
+                "Random",
+                "Red",
+                "Amber",
+                "Green",
+                "White"
+            ],
+            "default": "Random",
+            "required": false
+        }
     },
     "actions": [
-      {
-        "action": "on poll",
-        "description": "Callback action for the on_poll ingest functionality.",
-        "type": "ingest",
-        "identifier": "on_poll",
-        "read_only": true,
-        "parameters": {
-          "container_count": {
-            "data_type": "numeric",
-            "description": "Number of events to generate",
-            "required": false,
-            "value": null
-          },
-          "artifact_count": {
-            "data_type": "numeric",
-            "description": "Number of artifacts to generate per event",
-            "required": false,
-            "value": null
-          }
-        },
-        "output": [],
-        "versions":"EQ(*)"
-      }
+        {
+            "action": "on poll",
+            "description": "Callback action for the on_poll ingest functionality",
+            "type": "ingest",
+            "identifier": "on_poll",
+            "read_only": true,
+            "parameters": {
+                "container_count": {
+                    "data_type": "numeric",
+                    "description": "Number of events to generate",
+                    "required": false,
+                    "value": null
+                },
+                "artifact_count": {
+                    "data_type": "numeric",
+                    "description": "Number of artifacts to generate per event",
+                    "required": false,
+                    "value": null
+                }
+            },
+            "output": [],
+            "versions": "EQ(*)"
+        }
     ]
 }

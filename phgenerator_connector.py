@@ -127,6 +127,7 @@ class GeneratorConnector(BaseConnector):
         container_prefix = config.get('container_prefix', GEN_CONTAINER_PREFIX)
         container_tag = config.get('container_tag', GEN_CONTAINER_TAG)
         artifact_tag = config.get('artifact_tag', GEN_ARTIFACT_TAG)
+        #
         data_filepath = config.get('source_data_file', FILE_ARTIFACT_DUMP)
         incident_name_filepath = config.get('source_name_file', FILE_INCIDENT_NAMES)
         #
@@ -152,6 +153,8 @@ class GeneratorConnector(BaseConnector):
         # set data file to builtin by const file or by user string to apps/data/generator dir
         if data_filepath == FILE_ARTIFACT_DUMP:
             artifact_datafile = useinc_filepath + FILE_ARTIFACT_DUMP
+        elif 'inc/empty.txt' in data_filepath:
+            artifact_datafile = useinc_filepath + FILE_ARTIFACT_EMPTY
         else:
             artifact_datafile = os.path.normpath(user_data_filepath + '/' + data_filepath)
         #
@@ -244,6 +247,9 @@ class GeneratorConnector(BaseConnector):
                 if found_event_name and found_event_name != "":
                     if not added_event_name:
                         container_item['name'] = found_event_name.strip()
+                        # if the container name found is empty after stripping then provide at least the prefix.
+                        if container_item['name'] == "":
+                            container_item['name'] = container_prefix
                         added_event_name = True
                         artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()
                         ready_artifacts.append(artifact_item)
@@ -251,7 +257,7 @@ class GeneratorConnector(BaseConnector):
                     else:  # if its an event name, and we've already found one, we don't want to add this one.
                         if artifact_count_override:
                             ready_artifacts.append(artifact_item)
-                            del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.                            
+                            del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                         pass
                 else:  # if its not an event name, we can add it.
                     artifact_item['name'] = (artifact_prefix + " " + self._get_artifact_name(artifact_item)).strip()

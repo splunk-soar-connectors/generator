@@ -5,15 +5,14 @@
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.pyc",
-    "app_version": "2.0.16",
-    "utctime_updated": "2017-12-21T03:23:38.000000Z",
+    "app_version": "2.0.13",
+    "utctime_updated": "2017-10-11T23:58:51.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
     "min_phantom_version": "3.0.251",
-    "logo": "logo_phantom.svg",
-    "logo_dark": "logo_phantom_dark.svg",
+    "logo": "phantom.png",
     "license": "Copyright (c) Phantom Cyber Corporation 2016-2017",
     "configuration": {
         "create_containers": {

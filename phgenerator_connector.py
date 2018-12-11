@@ -143,9 +143,13 @@ class GeneratorConnector(BaseConnector):
         #
         # find the app filepath
         useinc_filepath = os.path.dirname(__file__) + '/'
+        if hasattr(self, 'get_phantom_home'):
+            phantom_home_path = self.get_phantom_home()
+        else:
+            phantom_home_path = '/opt/phantom'
         #
         # make include data path if it doesnt exist
-        user_data_filepath = os.path.join(useinc_filepath, USER_INC_FILEPATH + self.get_app_id())
+        user_data_filepath = os.path.join(useinc_filepath, phantom_home_path, USER_INC_FILEPATH + self.get_app_id())
         if not os.path.exists(user_data_filepath):
             os.makedirs(user_data_filepath, 0775)
         #

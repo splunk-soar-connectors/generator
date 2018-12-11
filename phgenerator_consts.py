@@ -17,8 +17,7 @@ GEN_TEST_CONN_FAIL = "Test connectivity to nowhere has passed."
 GEN_MAX_CONTAINERS = 10
 GEN_MAX_ARTIFACTS = 10
 #
-# goes to /opt/phantom/apps/data/<app_id>/
-USER_INC_FILEPATH = '../data/generator_'
+USER_INC_FILEPATH = 'apps/data/generator_'
 FILE_ARTIFACT_DUMP = 'inc/artifact_dump.txt'
 FILE_ARTIFACT_EMPTY = 'inc/empty.txt'
 FILE_CEF_SAMPLE = 'inc/cef_sample.json'

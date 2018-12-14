@@ -1,16 +1,8 @@
-# --
 # File: phgenerator_connector.py
+# Copyright (c) 2014-2018 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2017
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 # Phantom imports
 import os
@@ -143,9 +135,13 @@ class GeneratorConnector(BaseConnector):
         #
         # find the app filepath
         useinc_filepath = os.path.dirname(__file__) + '/'
+        if hasattr(self, 'get_phantom_home'):
+            phantom_home_path = self.get_phantom_home()
+        else:
+            phantom_home_path = '/opt/phantom'
         #
         # make include data path if it doesnt exist
-        user_data_filepath = os.path.join(useinc_filepath, USER_INC_FILEPATH + self.get_app_id())
+        user_data_filepath = os.path.join(useinc_filepath, phantom_home_path, USER_INC_FILEPATH + self.get_app_id())
         if not os.path.exists(user_data_filepath):
             os.makedirs(user_data_filepath, 0775)
         #

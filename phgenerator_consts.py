@@ -1,11 +1,12 @@
 # File: phgenerator_consts.py
-# Copyright (c) 2014-2018 Splunk Inc.
+# Copyright (c) 2016-2018 Splunk Inc.
 #
 # SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
 
 GEN_TEST_CONN_SUCCESS = "Test connectivity to nowhere has passed."
 GEN_TEST_CONN_FAIL = "Test connectivity to nowhere has passed."
+EXCEPTION_LOAD_EVENT_DATA = "Exception Loading Event Data File: {0}\nYou may want to check the line number listed above for errors.\n --- Error: {1}"
 GEN_MAX_CONTAINERS = 10
 GEN_MAX_ARTIFACTS = 10
 #

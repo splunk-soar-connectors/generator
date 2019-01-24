@@ -1,4 +1,7 @@
-*.py
-.git*
 .project
+docker-compose.yml
+Makefile
 .pyproject
+.git*
+.gitlab-ci.yml
+*.py

@@ -1,19 +1,12 @@
-# --
 # File: PhantomFieldGenerator.py
+# Copyright (c) 2016-2019 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2018
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 import datetime
 from collections import defaultdict
-import random, string
+import random
+import string
 import json
 from copy import deepcopy
 # import time
@@ -49,6 +42,7 @@ def load_file_json(complete_filepath):
         # LogOutput('error', message='error loading file {}, {}'.format(complete_filepath, sys.exc_info()))
         return False
 
+
 def write_file_json(complete_filepath, output_dict):
     try:
         with open(complete_filepath, 'w') as data_file:
@@ -58,6 +52,7 @@ def write_file_json(complete_filepath, output_dict):
     except:
         # LogOutput('error', message='error writing file {}, {}'.format(complete_filepath, sys.exc_info()))
         return False
+
 
 class PhantomFieldGenerator(object):
     def __init__(self):
@@ -120,15 +115,15 @@ class PhantomFieldGenerator(object):
         return list(1)
 
 
-# # generate_rnd_timestamp_iso8601tz examples for altering time, should also be able to use negative values
-#===============================================================================
+# generate_rnd_timestamp_iso8601tz examples for altering time, should also be able to use negative values
+# ===============================================================================
 # |    | &{close_time_args} | Create Dictionary | delta_min=24 | delta_max=48 | delta_unit=hours |
 # |    | &{due_time_args} | Create Dictionary | delta_min=36 | delta_max=64 | delta_unit=hours |
 # |    | &{end_time_args} | Create Dictionary | delta_min=5 | delta_max=15 | delta_unit=minutes |
 # |    | PhantomFieldGenerator.Create Dataargs | add | container | close_time | ${close_time_args}
 # |    | PhantomFieldGenerator.Create Dataargs | add | container | due_time | ${due_time_args}
 # |    | PhantomFieldGenerator.Create Dataargs | add | container | end_time | ${end_time_args}
-#===============================================================================
+# ===============================================================================
     def generate_rnd_timestamp_iso8601tz(self, delta_min=0, delta_max=0, delta_unit='hours'):
         # LogOutput('debug', generate_8601tz='dmin: {} dmax: {} dunit: {}'.format(delta_min, delta_max, delta_unit))
         if delta_min == 0 and delta_max == 0:
@@ -190,17 +185,17 @@ class PhantomFieldGenerator(object):
 # loads the sample json dict and then uses dict_override to override the fields
 # value_override_list will be a list of dicts, each dict from one line of the file
 # See PhantomAutomationTools.Load File Dicts
-#===============================================================================
+# ===============================================================================
 # |    | &{cef_json_create} | Create Dictionary | cef_sample_dict=${cef_sample_json} | value_override_dictlist=${isight_sample_dictlist} |
 # |    | PhantomFieldGenerator.Create Dataargs | add | artifact | cef | ${cef_json_create}
-#===============================================================================
+# ===============================================================================
     def generate_rnd_sample_json_cef(self, cef_sample_dict="", value_override_dictlist="", min_ceffields="", max_ceffields=""):
         if (cef_sample_dict == "" or value_override_dictlist == ""):
             pass
             # LogOutput('debug', gen_rnd_sample_json_cef='You failed to provide create dataargs for this field to work')
         else:
             sample_dict = deepcopy(cef_sample_dict)
-            for _ in range(random.randint(int(min_ceffields), int(max_ceffields))): # pick between 2 and 8 keys to add and override
+            for _ in range(random.randint(int(min_ceffields), int(max_ceffields))):  # pick between 2 and 8 keys to add and override
                 pickakey = random.randint(0, (len(value_override_dictlist) - 1))
                 # LogOutput('debug', gen_rnd_sample_json_cef2='pkey: {} - vodl: {}'.format(pickakey, value_override_dictlist[pickakey]))
                 for key, value in value_override_dictlist[pickakey].iteritems():  # pick one of the items in the list, it's a dict, so then use the key/values inside to overwrite
@@ -234,7 +229,7 @@ class PhantomFieldGenerator(object):
         # #LogOutput('info', message=self.fieldtypes['fieldtypes']['status']['values'])
         return self.fieldtypes['fieldtypes']['string_status']['values'][rndchoice]
 
-#===============================================================================
+# ===============================================================================
 # #
 # ## create phase- json, specify container api and random creation method
 # #
@@ -252,7 +247,7 @@ class PhantomFieldGenerator(object):
 # # this create example shows how you can have it create x containers with x artifacts each
 # # |    | ${generated_data}= | PhantomFieldGenerator.Create Many | sequential | ${quantity_create_items} | container=random | artifact=random |
 # #|    | Log | \nGenerated data: ${generated_data} | console=yes
-#===============================================================================
+# ===============================================================================
 # create_many and run_many --
 # this can be used to create many data transactions
 # method provides some logic to how to create the items
@@ -280,12 +275,13 @@ class PhantomFieldGenerator(object):
 # seed is seed data for the process
 # FIXME: for now this will modify all the fields in the entire generated model for the particular label
 # modify cef fields to have sequentially different IP addresses
-#===============================================================================
+# ===============================================================================
 # |    | ${generated_data}= | PhantomFieldGenerator.Modify Model | artifact | sequential | ipaddr | cef | destinationAddress | 2.2.4.0 |
 # |    | ${generated_data}= | PhantomFieldGenerator.Modify Model | artifact | sequential | ipaddr | cef | sourceAddress | 7.3.4.0 |
 # # delete dst field out of cef entries
 # |    | ${generated_data}= | PhantomFieldGenerator.Modify Model | artifact | delete | null | cef | dst | null |
-#===============================================================================
+# ===============================================================================
+
     def modify_model(self, label, method, datatype, locale, field, seed):
         if label == 'artifact':
             if method == 'sequential':
@@ -308,24 +304,23 @@ class PhantomFieldGenerator(object):
         # LogOutput('debug', create_data1='Creating \'{}\' json data, using method: \'{}\''.format(label, method))
         gendict = {}
         for key, value in self.restmodel[label].iteritems():
-            if not key in self.restmodel_fieldoverride[label]:  # manual override random generation of this particular field
+            if key not in self.restmodel_fieldoverride[label]:  # manual override random generation of this particular field
                 # LogOutput('debug', create_data2='Key {} - Value {}'.format(key,value))
                 if method == 'random':
-                    options = {'int' : self.generate_rnd_int,
-                               'sys_user_int_list' : self.generate_sys_rnd_user_int_list,
-                               'timestamp_iso8601' : self.generate_rnd_timestamp_iso8601tz,
-                               'json_custom' : self.generate_rnd_json_custom,
-                               'json_custom_fixedname' : self.generate_rnd_json_custom_fixedname,
-                               'json_cef' : self.generate_sample_json_cef,
-                               'json_rnd_sample_cef' : self.generate_rnd_sample_json_cef,
-                               'string' : self.generate_rnd_string,
-                               'string_lower' : self.generate_rnd_string_lower,
-                               'string_userid' : self.generate_rnd_string_userid,
-                               'string_sensitivity' : self.generate_rnd_string_sensitivity,
-                               'string_severity' : self.generate_rnd_string_severity,
-                               'string_unique' : self.generate_rnd_string,
-                               'string_status' : self.generate_rnd_status,
-                    }
+                    options = {'int': self.generate_rnd_int,
+                               'sys_user_int_list': self.generate_sys_rnd_user_int_list,
+                               'timestamp_iso8601': self.generate_rnd_timestamp_iso8601tz,
+                               'json_custom': self.generate_rnd_json_custom,
+                               'json_custom_fixedname': self.generate_rnd_json_custom_fixedname,
+                               'json_cef': self.generate_sample_json_cef,
+                               'json_rnd_sample_cef': self.generate_rnd_sample_json_cef,
+                               'string': self.generate_rnd_string,
+                               'string_lower': self.generate_rnd_string_lower,
+                               'string_userid': self.generate_rnd_string_userid,
+                               'string_sensitivity': self.generate_rnd_string_sensitivity,
+                               'string_severity': self.generate_rnd_string_severity,
+                               'string_unique': self.generate_rnd_string,
+                               'string_status': self.generate_rnd_status}
                     if label not in list(self.create_data_args.keys()):
                         gendict[key] = options[value]()
                     else:
@@ -337,6 +332,7 @@ class PhantomFieldGenerator(object):
                 gendict[key] = self.restmodel[label][key]  # add whatever value already existed in this field
             # LogOutput('debug', gendict='gendict:{}'.format(gendict[key]))
         return gendict
+
 
 if __name__ == '__main__':
     # LogOutput("info", message="Sample output from #logger")

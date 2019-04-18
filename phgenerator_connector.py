@@ -8,6 +8,7 @@
 import os
 import time
 import random
+import requests
 from datetime import timedelta
 import phantom.app as phantom
 from phantom.app import BaseConnector
@@ -17,6 +18,55 @@ from phgenerator_consts import *
 
 
 class GeneratorConnector(BaseConnector):
+
+    def __init__(self):
+
+        # Call the BaseConnectors init first
+        super(GeneratorConnector, self).__init__()
+
+        self._severity = None
+        self._severities = None
+        self._status = None
+        self._statuses = None
+        self._new_statuses = None
+
+    def initialize(self):
+
+        # Support custom severities and statuses
+        config = self.get_config()
+
+        try:
+            r = requests.get('{0}rest/severity'.format(self._get_phantom_base_url()), verify=False)
+            resp_json = r.json()
+        except Exception as e:
+            return self.set_status(phantom.APP_ERROR, "Could not get severities from platform: {0}".format(e))
+
+        if r.status_code != 200:
+            return self.set_status(phantom.APP_ERROR, "Could not get severities from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
+
+        self._severities = [s['name'] for s in resp_json['data']]
+        self._severity = config.get('event_severity', 'random').lower()
+
+        if self._severity not in self._severities and self._severity != 'random':
+            return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
+
+        try:
+            r = requests.get('{0}rest/container_status'.format(self._get_phantom_base_url()), verify=False)
+            resp_json = r.json()
+        except Exception as e:
+            return self.set_status(phantom.APP_ERROR, "Could not get statuses from platform: {0}".format(e))
+
+        self._statuses = [s['name'] for s in resp_json['data']]
+        self._new_statuses = []
+        for s in resp_json['data']:
+            if s['status_type'] == 'new':
+                self._new_statuses.append(s['name'])
+        self._status = config.get('event_status', 'random').lower()
+
+        if self._status not in self._statuses and self._status != 'random':
+            return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(self._status, ', '.join(self._statuses)))
+
+        return phantom.APP_SUCCESS
 
     # code that decides what to name artifacts based on their cef content keys
     def _get_artifact_name(self, artifact_item):
@@ -104,7 +154,6 @@ class GeneratorConnector(BaseConnector):
             else:
                 self.save_progress("NOT forcing artifact count. Generating UP TO {} artifacts per event.".format(domax_artifacts))
             self.save_progress("Randomizing owners: {}".format(randomize_event_owners))
-            self.save_progress("Randomizing container status: {}".format(config.get('randomize_container_status', False)))
             self.save_progress("Generating {} events.".format(domax_containers))
 
         # find the app filepath
@@ -174,8 +223,6 @@ class GeneratorConnector(BaseConnector):
         #
         assetid = self.get_asset_id()
         pfg.field_override('modify', 'container', 'asset_id', assetid)
-        if not config.get('randomize_container_status', False):
-            pfg.field_override('modify', 'container', 'status', 'new')
         pfg.field_override('delete', 'container', 'close_time')
         pfg.field_override('delete', 'container', 'owner_id')
         pfg.field_override('modify', 'artifact', 'label', config.get('artifact_label', GEN_ARTIFACT_LABEL))
@@ -184,11 +231,8 @@ class GeneratorConnector(BaseConnector):
         pfg.field_override('modify', 'artifact', 'type', 'event')
         pfg.field_override('modify', 'container', 'description', config.get('container_prefix', GEN_CONTAINER_PREFIX))
 
-        # PAPP-3109 Container severity and sensitivity options
         if config.get('event_sensitivity', "Random") != "Random":
             pfg.field_override('modify', 'container', 'sensitivity', config.get('event_sensitivity', "Random").lower())
-        if config.get('event_severity', "Random") != "Random":
-            pfg.field_override('modify', 'container', 'severity', config.get('event_severity', "Random").lower())
 
         # pfg.field_override('delete', 'artifact', 'run_automation', False)  # PS-8501 don't put run automation flag in when using save_container.
         # allow tags to be added (maybe just one, unsure ;)
@@ -209,6 +253,24 @@ class GeneratorConnector(BaseConnector):
             # if self.is_poll_now():
             #     self.send_progress("Generating artifacts for event.")
             # generate new artifacts for this container
+
+            if self._severity != "random":
+                severity = self._severity
+            else:
+                severity = random.choice(self._severities)
+
+            container_item['severity'] = severity
+
+            if self._status != "random":
+                status = self._status
+            else:
+                if config.get('limit_status_to_new', True):
+                    status = random.choice(self._new_statuses)
+                else:
+                    status = random.choice(self._statuses)
+
+            container_item['status'] = status
+
             generated_data = pfg.create_many('sequential', domax_artifacts, artifact='random')
             added_event_name = False
             ready_artifacts = []
@@ -232,6 +294,7 @@ class GeneratorConnector(BaseConnector):
                 else:  # if its not an event name, we can add it.
                     artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(artifact_item)).strip()
                     ready_artifacts.append(artifact_item)
+                artifact_item['severity'] = severity
             # start posting, save the container, then run through artifacts filtered above.
             container_item['artifacts'] = ready_artifacts
 

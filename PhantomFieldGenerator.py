@@ -114,7 +114,6 @@ class PhantomFieldGenerator(object):
     def generate_sys_rnd_user_int_list(self):
         return list(1)
 
-
 # generate_rnd_timestamp_iso8601tz examples for altering time, should also be able to use negative values
 # ===============================================================================
 # |    | &{close_time_args} | Create Dictionary | delta_min=24 | delta_max=48 | delta_unit=hours |

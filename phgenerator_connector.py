@@ -36,29 +36,23 @@ class GeneratorConnector(BaseConnector):
         config = self.get_config()
 
         try:
-            r = requests.get('{0}rest/severity'.format(self._get_phantom_base_url()), verify=False)
+            r = requests.get('{0}rest/container_options'.format(self._get_phantom_base_url()), verify=False)
             resp_json = r.json()
         except Exception as e:
-            return self.set_status(phantom.APP_ERROR, "Could not get severities from platform: {0}".format(e))
+            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(e))
 
         if r.status_code != 200:
-            return self.set_status(phantom.APP_ERROR, "Could not get severities from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
+            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
 
-        self._severities = [s['name'] for s in resp_json['data']]
+        self._severities = [s['name'] for s in resp_json['severity']]
         self._severity = config.get('event_severity', 'random').lower()
 
         if self._severity not in self._severities and self._severity != 'random':
             return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
 
-        try:
-            r = requests.get('{0}rest/container_status'.format(self._get_phantom_base_url()), verify=False)
-            resp_json = r.json()
-        except Exception as e:
-            return self.set_status(phantom.APP_ERROR, "Could not get statuses from platform: {0}".format(e))
-
-        self._statuses = [s['name'] for s in resp_json['data']]
+        self._statuses = [s['name'] for s in resp_json['status']]
         self._new_statuses = []
-        for s in resp_json['data']:
+        for s in resp_json['status']:
             if s['status_type'] == 'new':
                 self._new_statuses.append(s['name'])
         self._status = config.get('event_status', 'random').lower()

@@ -5,27 +5,27 @@
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.pyc",
-    "app_version": "2.0.20",
-    "utctime_updated": "2019-01-03T19:44:25.000000Z",
+    "app_version": "3.0.1",
+    "utctime_updated": "2019-04-24T23:14:49.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.0.1068",
+    "min_phantom_version": "4.5.10852",
     "logo": "logo_generator.svg",
     "logo_dark": "logo_generator_dark.svg",
     "license": "Copyright (c) 2016-2019 Splunk Inc.",
     "configuration": {
         "create_containers": {
             "data_type": "numeric",
-            "order": 1,
+            "order": 0,
             "description": "Events to generate",
             "value": 10,
             "required": true
         },
         "create_artifacts": {
             "data_type": "numeric",
-            "order": 5,
+            "order": 2,
             "description": "Artifacts per event to generate",
             "value": 10,
             "required": true
@@ -33,76 +33,63 @@
         "container_prefix": {
             "data_type": "string",
             "description": "Event name prefix",
-            "order": 2,
+            "order": 1,
             "required": false
         },
         "artifact_count_override": {
             "data_type": "boolean",
             "description": "Force exact artifact count",
-            "order": 8,
+            "order": 5,
             "default": false,
-            "required": false
-        },
-        "randomize_container_status": {
-            "data_type": "boolean",
-            "description": "Randomize event status",
-            "default": false,
-            "order": 4,
             "required": false
         },
         "event_owner_range": {
             "data_type": "string",
             "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
             "value": "0-0",
-            "order": 3,
+            "order": 18,
             "required": false
         },
         "artifact_prefix": {
             "data_type": "string",
             "description": "Artifact name prefix",
-            "order": 6,
-            "required": false
-        },
-        "ph2": {
-            "data_type": "ph",
-            "description": "a",
-            "order": 7,
+            "order": 3,
             "required": false
         },
         "artifact_label": {
             "data_type": "string",
             "description": "Artifact label",
-            "order": 9,
+            "order": 4,
             "required": false
         },
         "container_tag": {
             "data_type": "string",
             "description": "Tag to add to generated event containers",
-            "order": 10,
+            "order": 6,
             "required": false
         },
         "artifact_tag": {
             "data_type": "string",
             "description": "Tag to add to generated artifacts",
-            "order": 11,
+            "order": 7,
             "required": false
         },
         "source_data_file": {
             "data_type": "string",
             "description": "Artifact Data File (defaults to built in)",
-            "order": 12,
+            "order": 9,
             "required": false
         },
         "min_cef_per_artifact": {
             "data_type": "numeric",
-            "order": 13,
+            "order": 12,
             "description": "Min data lines per artifact",
             "value": 2,
             "required": false
         },
         "max_cef_per_artifact": {
             "data_type": "numeric",
-            "order": 14,
+            "order": 13,
             "description": "Max data lines per artifact",
             "value": 4,
             "required": false
@@ -110,19 +97,27 @@
         "source_name_file": {
             "data_type": "string",
             "description": "Event Name File (defaults to built in)",
+            "order": 8,
+            "required": false
+        },
+        "event_status": {
+            "data_type": "string",
+            "description": "Event Status",
+            "order": 14,
+            "default": "Random",
+            "required": false
+        },
+        "limit_status_to_new": {
+            "data_type": "boolean",
+            "description": "Limit event statuses to new status types",
             "order": 15,
+            "default": true,
             "required": false
         },
         "event_severity": {
             "data_type": "string",
             "description": "Event Severity",
             "order": 16,
-            "value_list": [
-                "Random",
-                "High",
-                "Medium",
-                "Low"
-            ],
             "default": "Random",
             "required": false
         },

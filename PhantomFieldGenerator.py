@@ -197,7 +197,7 @@ class PhantomFieldGenerator(object):
             for _ in range(random.randint(int(min_ceffields), int(max_ceffields))):  # pick between 2 and 8 keys to add and override
                 pickakey = random.randint(0, (len(value_override_dictlist) - 1))
                 # LogOutput('debug', gen_rnd_sample_json_cef2='pkey: {} - vodl: {}'.format(pickakey, value_override_dictlist[pickakey]))
-                for key, value in value_override_dictlist[pickakey].iteritems():  # pick one of the items in the list, it's a dict, so then use the key/values inside to overwrite
+                for key, value in list(value_override_dictlist[pickakey].items()):  # pick one of the items in the list, it's a dict, so then use the key/values inside to overwrite
                     sample_dict[key] = value
             return sample_dict
 
@@ -255,7 +255,7 @@ class PhantomFieldGenerator(object):
         x = 0
         if method == 'sequential':
             while x <= (int(quantity) - 1):
-                for label, method in kwargs.iteritems():
+                for label, method in list(kwargs.items()):
                     self.generated_model[label].append(self.create_data(label, method))
                 x += 1
         return self.generated_model
@@ -302,7 +302,7 @@ class PhantomFieldGenerator(object):
     def create_data(self, label, method):
         # LogOutput('debug', create_data1='Creating \'{}\' json data, using method: \'{}\''.format(label, method))
         gendict = {}
-        for key, value in self.restmodel[label].iteritems():
+        for key, value in list(self.restmodel[label].items()):
             if key not in self.restmodel_fieldoverride[label]:  # manual override random generation of this particular field
                 # LogOutput('debug', create_data2='Key {} - Value {}'.format(key,value))
                 if method == 'random':

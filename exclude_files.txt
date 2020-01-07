@@ -4,4 +4,3 @@ Makefile
 .pyproject
 .git*
 .gitlab-ci.yml
-*.py

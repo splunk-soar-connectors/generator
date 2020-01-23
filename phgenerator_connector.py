@@ -1,5 +1,5 @@
 # File: phgenerator_connector.py
-# Copyright (c) 2016-2019 Splunk Inc.
+# Copyright (c) 2016-2020 Splunk Inc.
 #
 # SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
 # without a valid written license from Splunk Inc. is PROHIBITED.
@@ -67,8 +67,8 @@ class GeneratorConnector(BaseConnector):
         # self.artifactnames_filein
         try:
             for artitem in self.artifactnames_filein:
-                for key, value in artitem.iteritems():
-                    for artkey, artvalue in (artifact_item.get('cef', {})).iteritems():
+                for key, value in list(artitem.items()):
+                    for artkey, artvalue in list((artifact_item.get('cef', {})).items()):
                         if artvalue.strip() == "":
                             continue
                         if key.lower() in artkey.lower():
@@ -160,7 +160,7 @@ class GeneratorConnector(BaseConnector):
         # make include data path if it doesnt exist
         user_data_filepath = os.path.join(useinc_filepath, phantom_home_path, USER_INC_FILEPATH + self.get_app_id())
         if not os.path.exists(user_data_filepath):
-            os.makedirs(user_data_filepath, 0775)
+            os.makedirs(user_data_filepath, 0o775)
 
         # set data file to builtin by const file or by user string to apps/data/generator dir
         if config.get('source_data_file', FILE_ARTIFACT_DUMP) == FILE_ARTIFACT_DUMP:
@@ -369,6 +369,6 @@ if __name__ == '__main__':
                 connector._load_app_json()
                 connector._init_ingestion_dicts()
 
-        print result
+        print(result)
 
     exit(0)

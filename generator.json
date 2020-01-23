@@ -12,7 +12,7 @@
     "product_name": "Generator",
     "product_version_regex": ".*",
     "min_phantom_version": "4.5.15922",
-    "latest_tested_versions": "N/A",
+    "latest_tested_versions": ["Phantom 4.6.19142", "Phantom 4.8.22965"],
     "python_version": "3",
     "logo": "logo_generator.svg",
     "logo_dark": "logo_generator_dark.svg",

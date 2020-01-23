@@ -1,5 +1,5 @@
-.project
 docker-compose.yml
+.project
 Makefile
 .pyproject
 .git*

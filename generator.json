@@ -5,7 +5,7 @@
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.6",
+    "app_version": "4.0.7",
     "utctime_updated": "2020-01-23T19:51:19.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
@@ -13,8 +13,8 @@
     "product_version_regex": ".*",
     "min_phantom_version": "4.5.15922",
     "latest_tested_versions": [
-        "Phantom 4.6.19142",
-        "Phantom 4.8.22965"
+        "Phantom 4.8.24304",
+        "Phantom 4.9.36376"
     ],
     "python_version": "3",
     "logo": "logo_generator.svg",
@@ -142,6 +142,16 @@
         }
     },
     "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
         {
             "action": "on poll",
             "description": "Callback action for the on_poll ingest functionality",

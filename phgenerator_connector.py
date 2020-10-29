@@ -310,11 +310,12 @@ class GeneratorConnector(BaseConnector):
 
         return self.set_status(phantom.APP_SUCCESS)
 
-    def _test_connectivity(self, param):
+    def _test_connectivity(self):
+        # If we are here we have successfully passed connectivity through initialize method
+        self.save_progress("Connectivity test passed")
 
-        self.save_progress(GEN_TEST_CONN_SUCCESS)
-
-        return self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        return self.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         """Function that handles all the actions
@@ -327,7 +328,6 @@ class GeneratorConnector(BaseConnector):
 
         result = None
         action = self.get_action_identifier()
-
         if (action == phantom.ACTION_ID_INGEST_ON_POLL or action == 'on_poll'):
             start_time = time.time()
             result = self._on_poll(param)
@@ -335,8 +335,8 @@ class GeneratorConnector(BaseConnector):
             diff_time = end_time - start_time
             human_time = str(timedelta(seconds=int(diff_time)))
             self.save_progress("Time taken: {0}".format(human_time))
-        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
-            result = self._test_connectivity(param)
+        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            result = self._test_connectivity()
 
         return result
 

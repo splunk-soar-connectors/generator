@@ -312,7 +312,7 @@ class GeneratorConnector(BaseConnector):
 
     def _test_connectivity(self):
         # If we are here we have successfully passed connectivity through initialize method
-        self.save_progress("Connectivity test passed")
+        self.save_progress("Test Connectivity Passed")
 
         self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
         return self.set_status(phantom.APP_SUCCESS)

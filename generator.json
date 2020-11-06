@@ -5,7 +5,7 @@
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.7",
+    "app_version": "4.0.6",
     "utctime_updated": "2020-01-23T19:51:19.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",

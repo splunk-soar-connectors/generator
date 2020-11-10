@@ -34,6 +34,11 @@ class GeneratorConnector(BaseConnector):
 
         # Support custom severities and statuses
         config = self.get_config()
+        action = self.get_action_identifier()
+        test_connectivity = False
+
+        if (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            test_connectivity = True
 
         try:
             r = requests.get('{0}rest/container_options'.format(self._get_phantom_base_url()), verify=False)
@@ -42,12 +47,16 @@ class GeneratorConnector(BaseConnector):
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(e))
 
         if r.status_code != 200:
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
 
         self._severities = [s['name'] for s in resp_json['severity']]
         self._severity = config.get('event_severity', 'random').lower()
 
         if self._severity not in self._severities and self._severity != 'random':
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
 
         self._statuses = [s['name'] for s in resp_json['status']]
@@ -58,6 +67,8 @@ class GeneratorConnector(BaseConnector):
         self._status = config.get('event_status', 'random').lower()
 
         if self._status not in self._statuses and self._status != 'random':
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(self._status, ', '.join(self._statuses)))
 
         return phantom.APP_SUCCESS

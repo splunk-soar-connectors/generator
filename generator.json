@@ -5,16 +5,16 @@
     "type": "generic",
     "publisher": "Phantom",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.7",
-    "utctime_updated": "2020-01-24T00:28:58.000000Z",
+    "app_version": "4.0.72",
+    "utctime_updated": "2020-11-23T08:18:00.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
     "min_phantom_version": "4.5.15922",
     "latest_tested_versions": [
-        "Phantom 4.6.19142",
-        "Phantom 4.8.22965"
+        "Phantom 4.8.24304",
+        "Phantom 4.9.36376"
     ],
     "python_version": "3",
     "logo": "logo_generator.svg",
@@ -143,6 +143,16 @@
     },
     "actions": [
         {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
             "action": "on poll",
             "description": "Callback action for the on_poll ingest functionality",
             "type": "ingest",
@@ -165,5 +175,29 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "certifi",
+                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+            },
+            {
+                "module": "chardet",
+                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+            }
+        ]
+    }
 }

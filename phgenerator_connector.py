@@ -1,9 +1,19 @@
 # File: phgenerator_connector.py
+#
 # Copyright (c) 2016-2020 Splunk Inc.
 #
-# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
-# without a valid written license from Splunk Inc. is PROHIBITED.
-
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+#
+#
 # Phantom imports
 import os
 import time
@@ -34,6 +44,11 @@ class GeneratorConnector(BaseConnector):
 
         # Support custom severities and statuses
         config = self.get_config()
+        action = self.get_action_identifier()
+        test_connectivity = False
+
+        if (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            test_connectivity = True
 
         try:
             r = requests.get('{0}rest/container_options'.format(self._get_phantom_base_url()), verify=False)
@@ -42,12 +57,16 @@ class GeneratorConnector(BaseConnector):
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(e))
 
         if r.status_code != 200:
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
 
         self._severities = [s['name'] for s in resp_json['severity']]
         self._severity = config.get('event_severity', 'random').lower()
 
         if self._severity not in self._severities and self._severity != 'random':
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
 
         self._statuses = [s['name'] for s in resp_json['status']]
@@ -58,6 +77,8 @@ class GeneratorConnector(BaseConnector):
         self._status = config.get('event_status', 'random').lower()
 
         if self._status not in self._statuses and self._status != 'random':
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
             return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(self._status, ', '.join(self._statuses)))
 
         return phantom.APP_SUCCESS
@@ -310,11 +331,12 @@ class GeneratorConnector(BaseConnector):
 
         return self.set_status(phantom.APP_SUCCESS)
 
-    def _test_connectivity(self, param):
+    def _test_connectivity(self):
+        # If we are here we have successfully passed connectivity through initialize method
+        self.save_progress("Test Connectivity Passed")
 
-        self.save_progress(GEN_TEST_CONN_SUCCESS)
-
-        return self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        return self.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         """Function that handles all the actions
@@ -327,7 +349,6 @@ class GeneratorConnector(BaseConnector):
 
         result = None
         action = self.get_action_identifier()
-
         if (action == phantom.ACTION_ID_INGEST_ON_POLL or action == 'on_poll'):
             start_time = time.time()
             result = self._on_poll(param)
@@ -335,8 +356,8 @@ class GeneratorConnector(BaseConnector):
             diff_time = end_time - start_time
             human_time = str(timedelta(seconds=int(diff_time)))
             self.save_progress("Time taken: {0}".format(human_time))
-        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
-            result = self._test_connectivity(param)
+        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            result = self._test_connectivity()
 
         return result
 

@@ -16,11 +16,12 @@
 #
 # Phantom imports
 import os
-import time
 import random
-import requests
+import time
 from datetime import timedelta
+
 import phantom.app as phantom
+import requests
 from phantom.app import BaseConnector
 
 from PhantomFieldGenerator import *
@@ -59,7 +60,8 @@ class GeneratorConnector(BaseConnector):
         if r.status_code != 200:
             if test_connectivity:
                 self.save_progress("Test Connectivity Failed")
-            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
+            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(
+                resp_json.get('message', 'Unknown Error')))
 
         self._severities = [s['name'] for s in resp_json['severity']]
         self._severity = config.get('event_severity', 'random').lower()
@@ -67,7 +69,8 @@ class GeneratorConnector(BaseConnector):
         if self._severity not in self._severities and self._severity != 'random':
             if test_connectivity:
                 self.save_progress("Test Connectivity Failed")
-            return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
+            return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(
+                self._severity, ', '.join(self._severities)))
 
         self._statuses = [s['name'] for s in resp_json['status']]
         self._new_statuses = []
@@ -79,7 +82,8 @@ class GeneratorConnector(BaseConnector):
         if self._status not in self._statuses and self._status != 'random':
             if test_connectivity:
                 self.save_progress("Test Connectivity Failed")
-            return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(self._status, ', '.join(self._statuses)))
+            return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(
+                self._status, ', '.join(self._statuses)))
 
         return phantom.APP_SUCCESS
 
@@ -249,7 +253,7 @@ class GeneratorConnector(BaseConnector):
         if config.get('event_sensitivity', "Random") != "Random":
             pfg.field_override('modify', 'container', 'sensitivity', config.get('event_sensitivity', "Random").lower())
 
-        # pfg.field_override('delete', 'artifact', 'run_automation', False)  # PS-8501 don't put run automation flag in when using save_container.
+        # pfg.field_override('delete', 'artifact', 'run_automation', False) # PS-8501 don't put run automation flag in when using save_container.
         # allow tags to be added (maybe just one, unsure ;)
         if config.get('container_tag', GEN_CONTAINER_TAG) != "":
             pfg.field_override('modify', 'container', 'tags', config.get('container_tag', GEN_CONTAINER_TAG))
@@ -298,7 +302,8 @@ class GeneratorConnector(BaseConnector):
                         if container_item['name'] == "":
                             container_item['name'] = config.get('container_prefix', GEN_CONTAINER_PREFIX)
                         added_event_name = True
-                        artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(artifact_item)).strip()
+                        artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(
+                            artifact_item)).strip()
                         ready_artifacts.append(artifact_item)
                         del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                     else:  # if its an event name, and we've already found one, we don't want to add this one.
@@ -307,7 +312,8 @@ class GeneratorConnector(BaseConnector):
                             del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                         pass
                 else:  # if its not an event name, we can add it.
-                    artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(artifact_item)).strip()
+                    artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(
+                        artifact_item)).strip()
                     ready_artifacts.append(artifact_item)
                 artifact_item['severity'] = severity
             # start posting, save the container, then run through artifacts filtered above.
@@ -363,8 +369,8 @@ class GeneratorConnector(BaseConnector):
 
 
 if __name__ == '__main__':
-    import sys
     import json
+    import sys
     in_json = None
     in_email = None
     with open(sys.argv[1]) as f:

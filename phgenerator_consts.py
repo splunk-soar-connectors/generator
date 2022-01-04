@@ -14,7 +14,8 @@
 # and limitations under the License.
 GEN_TEST_CONN_SUCCESS = "Test connectivity to nowhere has passed."
 GEN_TEST_CONN_FAIL = "Test connectivity to nowhere has passed."
-EXCEPTION_LOAD_EVENT_DATA = "Exception Loading Event Data File: {0}\nYou may want to check the line number listed above for errors.\n --- Error: {1}"
+EXCEPTION_LOAD_EVENT_DATA = "Exception Loading Event Data File: {0}\nYou may want to check the line number listed above for errors. \
+    \n --- Error: {1}"
 GEN_MAX_CONTAINERS = 10
 GEN_MAX_ARTIFACTS = 10
 #

@@ -13,11 +13,12 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 import datetime
-from collections import defaultdict
+import json
 import random
 import string
-import json
+from collections import defaultdict
 from copy import deepcopy
+
 # import time
 __version__ = '0.1c'
 
@@ -65,11 +66,15 @@ def write_file_json(complete_filepath, output_dict):
 
 class PhantomFieldGenerator(object):
     def __init__(self):
-        self.restmodel = {}  # this is where the sample model is loaded (definitions) to create output data
-        self.restmodel_fieldoverride = defaultdict(list)  # this can be set using field_override to set manual values in fields when randomly creating other data
-        self.generated_model = defaultdict(list)  # when using create_many this is where the large data model is stored
+        # this is where the sample model is loaded (definitions) to create output data
+        self.restmodel = {}
+        # this can be set using field_override to set manual values in fields when randomly creating other data
+        self.restmodel_fieldoverride = defaultdict(list)
+        # when using create_many this is where the large data model is stored
+        self.generated_model = defaultdict(list)
         # self.create_data_args -- was going to use to load cef file, then decided to use field override instead
-        self.create_data_args = defaultdict(lambda: defaultdict())  # this can be set to provide arguments to the random field generator routine for a particular label
+        # this can be set to provide arguments to the random field generator routine for a particular label
+        self.create_data_args = defaultdict(lambda: defaultdict())
 
     def load_fieldtypes(self, fieldtype_json):
         self.fieldtypes = json.loads(fieldtype_json)
@@ -206,7 +211,8 @@ class PhantomFieldGenerator(object):
             for _ in range(random.randint(int(min_ceffields), int(max_ceffields))):  # pick between 2 and 8 keys to add and override
                 pickakey = random.randint(0, (len(value_override_dictlist) - 1))
                 # LogOutput('debug', gen_rnd_sample_json_cef2='pkey: {} - vodl: {}'.format(pickakey, value_override_dictlist[pickakey]))
-                for key, value in list(value_override_dictlist[pickakey].items()):  # pick one of the items in the list, it's a dict, so then use the key/values inside to overwrite
+                # pick one of the items in the list, it's a dict, so then use the key/values inside to overwrite
+                for key, value in list(value_override_dictlist[pickakey].items()):
                     sample_dict[key] = value
             return sample_dict
 
@@ -220,7 +226,8 @@ class PhantomFieldGenerator(object):
 
     def generate_rnd_string_userid(self):
         char_set = string.ascii_letters + string.digits
-        return ''.join(random.sample(char_set * 13, 13)) + "@" + ''.join(random.sample(char_set * 13, 13)) + "." + ''.join(random.sample(char_set * 3, 3))
+        return ''.join(random.sample(char_set * 13, 13)) + "@" + ''.join(random.sample(char_set * 13, 13)) + "." + ''.join(
+            random.sample(char_set * 3, 3))
 
     def generate_rnd_string_sensitivity(self):
         rndchoice = random.randint(0, (len(self.fieldtypes['fieldtypes']['string_sensitivity']['values']) - 1))

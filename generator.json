@@ -17,21 +17,15 @@
         "Phantom 4.9.36376"
     ],
     "python_version": "3",
+    "fips_compliant": true,
     "logo": "logo_generator.svg",
     "logo_dark": "logo_generator_dark.svg",
-    "license": "Copyright (c) 2016-2020 Splunk Inc.",
+    "license": "Copyright (c) 2016-2022 Splunk Inc.",
     "configuration": {
         "create_containers": {
             "data_type": "numeric",
             "order": 0,
             "description": "Events to generate",
-            "value": 10,
-            "required": true
-        },
-        "create_artifacts": {
-            "data_type": "numeric",
-            "order": 2,
-            "description": "Artifacts per event to generate",
             "value": 10,
             "required": true
         },
@@ -41,19 +35,12 @@
             "order": 1,
             "required": false
         },
-        "artifact_count_override": {
-            "data_type": "boolean",
-            "description": "Force exact artifact count",
-            "order": 5,
-            "default": false,
-            "required": false
-        },
-        "event_owner_range": {
-            "data_type": "string",
-            "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
-            "value": "0-0",
-            "order": 18,
-            "required": false
+        "create_artifacts": {
+            "data_type": "numeric",
+            "order": 2,
+            "description": "Artifacts per event to generate",
+            "value": 10,
+            "required": true
         },
         "artifact_prefix": {
             "data_type": "string",
@@ -65,6 +52,13 @@
             "data_type": "string",
             "description": "Artifact label",
             "order": 4,
+            "required": false
+        },
+        "artifact_count_override": {
+            "data_type": "boolean",
+            "description": "Force exact artifact count",
+            "order": 5,
+            "default": false,
             "required": false
         },
         "container_tag": {
@@ -79,6 +73,12 @@
             "order": 7,
             "required": false
         },
+        "source_name_file": {
+            "data_type": "string",
+            "description": "Event Name File (defaults to built in)",
+            "order": 8,
+            "required": false
+        },
         "source_data_file": {
             "data_type": "string",
             "description": "Artifact Data File (defaults to built in)",
@@ -87,49 +87,43 @@
         },
         "min_cef_per_artifact": {
             "data_type": "numeric",
-            "order": 12,
+            "order": 10,
             "description": "Min data lines per artifact",
             "value": 2,
             "required": false
         },
         "max_cef_per_artifact": {
             "data_type": "numeric",
-            "order": 13,
+            "order": 11,
             "description": "Max data lines per artifact",
             "value": 4,
-            "required": false
-        },
-        "source_name_file": {
-            "data_type": "string",
-            "description": "Event Name File (defaults to built in)",
-            "order": 8,
             "required": false
         },
         "event_status": {
             "data_type": "string",
             "description": "Event Status",
-            "order": 14,
+            "order": 12,
             "default": "Random",
             "required": false
         },
         "limit_status_to_new": {
             "data_type": "boolean",
             "description": "Limit event statuses to new status types",
-            "order": 15,
+            "order": 13,
             "default": true,
             "required": false
         },
         "event_severity": {
             "data_type": "string",
             "description": "Event Severity",
-            "order": 16,
+            "order": 14,
             "default": "Random",
             "required": false
         },
         "event_sensitivity": {
             "data_type": "string",
             "description": "Event Sensitivity",
-            "order": 17,
+            "order": 15,
             "value_list": [
                 "Random",
                 "Red",
@@ -138,6 +132,13 @@
                 "White"
             ],
             "default": "Random",
+            "required": false
+        },
+        "event_owner_range": {
+            "data_type": "string",
+            "description": "Event owner ID range (ie: 1-5) (0-0 disables)",
+            "value": "0-0",
+            "order": 16,
             "required": false
         }
     },

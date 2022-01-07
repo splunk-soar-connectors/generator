@@ -1,3 +1,15 @@
+[comment]: # "Auto-generated SOAR connector documentation"
+# Generator
+
+Publisher: Phantom  
+Connector Version: 4\.0\.73  
+Product Vendor: Generic  
+Product Name: Generator  
+Product Version Supported (regex): "\.\*"  
+Minimum Product Version: 4\.5\.15922  
+
+This app generates ingested sample data
+
 [comment]: # " File: readme.md"
 [comment]: # "  Copyright (c) 2016-2022 Splunk Inc."
 [comment]: # ""
@@ -51,10 +63,10 @@ owner IDs do not exist, the events will fail to be added.
 
 ## Included data files:
 
-
-Included data files are shipped with the app; you can use these as samples to create your own:
-Default (contains event names): [artifact_dump.txt](inc/artifact_dump.txt)
-Generator version 1 file: [artifact_dump_v1.txt](inc/artifact_dump_v1.txt)
+  
+Included data files are shipped with the app; you can use these as samples to create your own:  
+Default (contains event names): [artifact_dump.txt](inc/artifact_dump.txt)  
+Generator version 1 file: [artifact_dump_v1.txt](inc/artifact_dump_v1.txt)  
 Generator version 2 file (copy of the default above):
 [artifact_dump_v2.txt](inc/artifact_dump_v2.txt)
 
@@ -62,39 +74,39 @@ Generator version 2 file (copy of the default above):
 
 Create a file in **/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/** with a
 useful name, such as "newdata.txt". If the path doesn't exist, make sure to complete an initial
-"Poll Now" with the app to initialize it.
+"Poll Now" with the app to initialize it.  
 **If you want to revert to Generator App v1 creation behavior, copy artifact_dump_v1.txt to the
 above path, set the file permissions, and create an asset that uses this filename for the artifact
-data file.**
+data file.**  
 Ensure that the file permissions are correct: chown -R phantom-worker.phantom
-/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/
+/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/  
 In your generator asset's "asset settings" configuration, set the field "Artifact Data File" to the
 filename, ie "newdata.txt". The file should contain on each line a valid python dict literal
 containing CEF sample data. Items are chosen from this file to fill the various CEF fields. If you
 want to make sure specific CEF fields appear in an artifact together, simply create a python dict
 literal on one line that contains all the CEF fields and their values. If you want to add more
 random data without correlating it to other CEF fields just add a simple python dict literal with
-one CEF field and its value.
+one CEF field and its value.  
 
 **Correlated data example (all three CEF fields will randomly appear in an artifact, possibly with
 additional generated CEF data):**
 
     {"cs1": "30968", "cs1Label": "asn", "destinationAddress": "77.221.140.99"}
+        
 
-
-
+  
 
 **Simple data example (the defined CEF field will randomly appear in an artifact, possibly with
 other generated CEF data):**
 
     {"destinationAddress": "253.207.67.115"}
+        
 
-
-
+  
 
 **Creating static event names with no real artifact data to be used as a generic cronjob event:**
 
-
+  
 
 **Adding a key value of phantom_eventName will allow the setting of the event name (container)
 within Phantom. This field is not added to the cef data:**
@@ -102,9 +114,9 @@ within Phantom. This field is not added to the cef data:**
 *This disables randomized event names (see below), since the data set includes event names.*
 
     {"phantom_eventName": "Variant of Win32/GameHack.ARC","fileHash": "31b72e15b9a1bd9128ee1e780af4ede1", "fileName": "WebUsko.exe"}
+        
 
-
-
+  
 
 **If phantom_eventName is found, the configured event name prefix will be ignored, and to avoid
 invalidating data any other artifacts with a phantom_eventName field will not be added to the
@@ -117,14 +129,14 @@ fields placed into an artifact. Generator will try to create artifacts using a r
 (between min and max) of lines in the selected source data file. As described above, each line can
 contain one or more CEF fields.
 
-
+  
 
 ## Creating static event (container) names without artifact data (useful for generic timed event triggering)
 
 Set the artifact data file field in the asset to "inc/empty.txt" without the quotes. The event
 prefix name (required) becomes the static name for all events generated.
 
-
+  
 
 ## Modifying randomized event (container) names
 
@@ -132,11 +144,66 @@ prefix name (required) becomes the static name for all events generated.
 
 Create a file in **/opt/phantom/apps/data/generator_48f16006-fee0-44fa-89b0-0106c0618527/** with a
 useful name, such as "event_names.txt". If the path doesn't exist, make sure to complete an initial
-"Poll Now" with the app to initialize it.
-Ensure that the file permissions are correct: chown phantom-worker.phantom.
+"Poll Now" with the app to initialize it.  
+Ensure that the file permissions are correct: chown phantom-worker.phantom.  
 In your generator asset's "asset settings" configuration, set the field "Event Name File" to the
 filename, ie "event_names.txt". The file should contain a list of phrases or words that you would
 like the app to randomly pull from in order to have more selectable event (container) names that are
-specific to your needs.
-
+specific to your needs.  
+  
 Default data file: [event_names.txt](inc/event_names.txt)
+
+
+### Configuration Variables
+The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Generator asset in SOAR.
+
+VARIABLE | REQUIRED | TYPE | DESCRIPTION
+-------- | -------- | ---- | -----------
+**create\_containers** |  required  | numeric | Events to generate
+**container\_prefix** |  optional  | string | Event name prefix
+**create\_artifacts** |  required  | numeric | Artifacts per event to generate
+**artifact\_prefix** |  optional  | string | Artifact name prefix
+**artifact\_label** |  optional  | string | Artifact label
+**artifact\_count\_override** |  optional  | boolean | Force exact artifact count
+**container\_tag** |  optional  | string | Tag to add to generated event containers
+**artifact\_tag** |  optional  | string | Tag to add to generated artifacts
+**source\_name\_file** |  optional  | string | Event Name File \(defaults to built in\)
+**source\_data\_file** |  optional  | string | Artifact Data File \(defaults to built in\)
+**min\_cef\_per\_artifact** |  optional  | numeric | Min data lines per artifact
+**max\_cef\_per\_artifact** |  optional  | numeric | Max data lines per artifact
+**event\_status** |  optional  | string | Event Status
+**limit\_status\_to\_new** |  optional  | boolean | Limit event statuses to new status types
+**event\_severity** |  optional  | string | Event Severity
+**event\_sensitivity** |  optional  | string | Event Sensitivity
+**event\_owner\_range** |  optional  | string | Event owner ID range \(ie\: 1\-5\) \(0\-0 disables\)
+
+### Supported Actions  
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
+[on poll](#action-on-poll) - Callback action for the on\_poll ingest functionality  
+
+## action: 'test connectivity'
+Validate the asset configuration for connectivity using supplied configuration
+
+Type: **test**  
+Read only: **True**
+
+#### Action Parameters
+No parameters are required for this action
+
+#### Action Output
+No Output  
+
+## action: 'on poll'
+Callback action for the on\_poll ingest functionality
+
+Type: **ingest**  
+Read only: **True**
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**container\_count** |  optional  | Number of events to generate | numeric | 
+**artifact\_count** |  optional  | Number of artifacts to generate per event | numeric | 
+
+#### Action Output
+No Output

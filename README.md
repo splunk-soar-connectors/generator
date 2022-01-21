@@ -2,7 +2,7 @@
 # Generator
 
 Publisher: Phantom  
-Connector Version: 4\.0\.73  
+Connector Version: 4\.0\.75  
 Product Vendor: Generic  
 Product Name: Generator  
 Product Version Supported (regex): "\.\*"  
@@ -10,7 +10,7 @@ Minimum Product Version: 4\.5\.15922
 
 This app generates ingested sample data
 
-[comment]: # " File: readme.md"
+[comment]: # " File: README.md"
 [comment]: # "  Copyright (c) 2016-2022 Splunk Inc."
 [comment]: # ""
 [comment]: # "Licensed under the Apache License, Version 2.0 (the 'License');"

@@ -1,7 +1,7 @@
 [comment]: # "Auto-generated SOAR connector documentation"
 # Generator
 
-Publisher: Phantom  
+Publisher: Splunk
 Connector Version: 4\.0\.75  
 Product Vendor: Generic  
 Product Name: Generator  

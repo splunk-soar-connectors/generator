@@ -1,16 +1,27 @@
 # File: phgenerator_connector.py
-# Copyright (c) 2016-2020 Splunk Inc.
 #
-# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
-# without a valid written license from Splunk Inc. is PROHIBITED.
-
+# Copyright (c) 2016-2022 Splunk Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+#
+#
 # Phantom imports
 import os
-import time
 import random
-import requests
+import time
 from datetime import timedelta
+
 import phantom.app as phantom
+import requests
 from phantom.app import BaseConnector
 
 from PhantomFieldGenerator import *
@@ -34,6 +45,11 @@ class GeneratorConnector(BaseConnector):
 
         # Support custom severities and statuses
         config = self.get_config()
+        action = self.get_action_identifier()
+        test_connectivity = False
+
+        if (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            test_connectivity = True
 
         try:
             r = requests.get('{0}rest/container_options'.format(self._get_phantom_base_url()), verify=False)
@@ -42,13 +58,19 @@ class GeneratorConnector(BaseConnector):
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(e))
 
         if r.status_code != 200:
-            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(resp_json.get('message', 'Unknown Error')))
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
+            return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(
+                resp_json.get('message', 'Unknown Error')))
 
         self._severities = [s['name'] for s in resp_json['severity']]
         self._severity = config.get('event_severity', 'random').lower()
 
         if self._severity not in self._severities and self._severity != 'random':
-            return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(self._severity, ', '.join(self._severities)))
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
+            return self.set_status(phantom.APP_ERROR, "Supplied severity, {0}, not found in configured severities: {1}".format(
+                self._severity, ', '.join(self._severities)))
 
         self._statuses = [s['name'] for s in resp_json['status']]
         self._new_statuses = []
@@ -58,7 +80,10 @@ class GeneratorConnector(BaseConnector):
         self._status = config.get('event_status', 'random').lower()
 
         if self._status not in self._statuses and self._status != 'random':
-            return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(self._status, ', '.join(self._statuses)))
+            if test_connectivity:
+                self.save_progress("Test Connectivity Failed")
+            return self.set_status(phantom.APP_ERROR, "Supplied status, {0}, not found in configured statuses: {1}".format(
+                self._status, ', '.join(self._statuses)))
 
         return phantom.APP_SUCCESS
 
@@ -228,7 +253,7 @@ class GeneratorConnector(BaseConnector):
         if config.get('event_sensitivity', "Random") != "Random":
             pfg.field_override('modify', 'container', 'sensitivity', config.get('event_sensitivity', "Random").lower())
 
-        # pfg.field_override('delete', 'artifact', 'run_automation', False)  # PS-8501 don't put run automation flag in when using save_container.
+        # pfg.field_override('delete', 'artifact', 'run_automation', False) # PS-8501 don't put run automation flag in when using save_container.
         # allow tags to be added (maybe just one, unsure ;)
         if config.get('container_tag', GEN_CONTAINER_TAG) != "":
             pfg.field_override('modify', 'container', 'tags', config.get('container_tag', GEN_CONTAINER_TAG))
@@ -277,7 +302,8 @@ class GeneratorConnector(BaseConnector):
                         if container_item['name'] == "":
                             container_item['name'] = config.get('container_prefix', GEN_CONTAINER_PREFIX)
                         added_event_name = True
-                        artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(artifact_item)).strip()
+                        artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(
+                            artifact_item)).strip()
                         ready_artifacts.append(artifact_item)
                         del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                     else:  # if its an event name, and we've already found one, we don't want to add this one.
@@ -286,7 +312,8 @@ class GeneratorConnector(BaseConnector):
                             del ready_artifacts[-1]['cef']['phantom_eventName']  # remove the event name so it doesnt get added as cef data.
                         pass
                 else:  # if its not an event name, we can add it.
-                    artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(artifact_item)).strip()
+                    artifact_item['name'] = (config.get('artifact_prefix', GEN_ARTIFACT_PREFIX) + " " + self._get_artifact_name(
+                        artifact_item)).strip()
                     ready_artifacts.append(artifact_item)
                 artifact_item['severity'] = severity
             # start posting, save the container, then run through artifacts filtered above.
@@ -310,11 +337,12 @@ class GeneratorConnector(BaseConnector):
 
         return self.set_status(phantom.APP_SUCCESS)
 
-    def _test_connectivity(self, param):
+    def _test_connectivity(self):
+        # If we are here we have successfully passed connectivity through initialize method
+        self.save_progress("Test Connectivity Passed")
 
-        self.save_progress(GEN_TEST_CONN_SUCCESS)
-
-        return self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
+        return self.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         """Function that handles all the actions
@@ -327,7 +355,6 @@ class GeneratorConnector(BaseConnector):
 
         result = None
         action = self.get_action_identifier()
-
         if (action == phantom.ACTION_ID_INGEST_ON_POLL or action == 'on_poll'):
             start_time = time.time()
             result = self._on_poll(param)
@@ -335,15 +362,15 @@ class GeneratorConnector(BaseConnector):
             diff_time = end_time - start_time
             human_time = str(timedelta(seconds=int(diff_time)))
             self.save_progress("Time taken: {0}".format(human_time))
-        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
-            result = self._test_connectivity(param)
+        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
+            result = self._test_connectivity()
 
         return result
 
 
 if __name__ == '__main__':
-    import sys
     import json
+    import sys
     in_json = None
     in_email = None
     with open(sys.argv[1]) as f:

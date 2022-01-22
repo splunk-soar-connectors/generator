@@ -3,7 +3,7 @@
     "name": "Generator",
     "description": "This app generates ingested sample data",
     "type": "generic",
-    "publisher": "Phantom",
+    "publisher": "Splunk",
     "main_module": "phgenerator_connector.py",
     "app_version": "4.0.75",
     "utctime_updated": "2022-01-11T18:14:56.000000Z",

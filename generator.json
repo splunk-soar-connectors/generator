@@ -143,9 +143,9 @@
         },
         "verify_server_cert": {
             "default": false,
+            "order": 17,
             "description": "Whether to verify server certificate",
-            "data_type": "boolean",
-            "order": 1
+            "data_type": "boolean"
         }
     },
     "actions": [

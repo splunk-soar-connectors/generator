@@ -1,12 +1,12 @@
 [comment]: # "Auto-generated SOAR connector documentation"
 # Generator
 
-Publisher: Splunk
-Connector Version: 4\.0\.75  
+Publisher: Splunk  
+Connector Version: 4\.0\.76  
 Product Vendor: Generic  
 Product Name: Generator  
 Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.5\.15922  
+Minimum Product Version: 5\.1\.0  
 
 This app generates ingested sample data
 
@@ -176,6 +176,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 **event\_severity** |  optional  | string | Event Severity
 **event\_sensitivity** |  optional  | string | Event Sensitivity
 **event\_owner\_range** |  optional  | string | Event owner ID range \(ie\: 1\-5\) \(0\-0 disables\)
+**verify\_server\_cert** |  optional  | boolean | Whether to verify server certificate
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  

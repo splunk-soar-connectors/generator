@@ -5,7 +5,7 @@
     "type": "generic",
     "publisher": "Splunk",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.76",
+    "app_version": "4.0.77",
     "utctime_updated": "2022-01-24T18:18:51.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
@@ -206,5 +206,8 @@
                 "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
             }
         ]
+    },
+    "pip39_dependencies": {
+        "wheel": []
     }
 }

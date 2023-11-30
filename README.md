@@ -2,11 +2,11 @@
 # Generator
 
 Publisher: Splunk  
-Connector Version: 4\.0\.76  
+Connector Version: 4.0.77  
 Product Vendor: Generic  
 Product Name: Generator  
-Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 5\.1\.0  
+Product Version Supported (regex): ".\*"  
+Minimum Product Version: 5.1.0  
 
 This app generates ingested sample data
 
@@ -159,28 +159,28 @@ The below configuration variables are required for this Connector to operate.  T
 
 VARIABLE | REQUIRED | TYPE | DESCRIPTION
 -------- | -------- | ---- | -----------
-**create\_containers** |  required  | numeric | Events to generate
-**container\_prefix** |  optional  | string | Event name prefix
-**create\_artifacts** |  required  | numeric | Artifacts per event to generate
-**artifact\_prefix** |  optional  | string | Artifact name prefix
-**artifact\_label** |  optional  | string | Artifact label
-**artifact\_count\_override** |  optional  | boolean | Force exact artifact count
-**container\_tag** |  optional  | string | Tag to add to generated event containers
-**artifact\_tag** |  optional  | string | Tag to add to generated artifacts
-**source\_name\_file** |  optional  | string | Event Name File \(defaults to built in\)
-**source\_data\_file** |  optional  | string | Artifact Data File \(defaults to built in\)
-**min\_cef\_per\_artifact** |  optional  | numeric | Min data lines per artifact
-**max\_cef\_per\_artifact** |  optional  | numeric | Max data lines per artifact
-**event\_status** |  optional  | string | Event Status
-**limit\_status\_to\_new** |  optional  | boolean | Limit event statuses to new status types
-**event\_severity** |  optional  | string | Event Severity
-**event\_sensitivity** |  optional  | string | Event Sensitivity
-**event\_owner\_range** |  optional  | string | Event owner ID range \(ie\: 1\-5\) \(0\-0 disables\)
-**verify\_server\_cert** |  optional  | boolean | Whether to verify server certificate
+**create_containers** |  required  | numeric | Events to generate
+**container_prefix** |  optional  | string | Event name prefix
+**create_artifacts** |  required  | numeric | Artifacts per event to generate
+**artifact_prefix** |  optional  | string | Artifact name prefix
+**artifact_label** |  optional  | string | Artifact label
+**artifact_count_override** |  optional  | boolean | Force exact artifact count
+**container_tag** |  optional  | string | Tag to add to generated event containers
+**artifact_tag** |  optional  | string | Tag to add to generated artifacts
+**source_name_file** |  optional  | string | Event Name File (defaults to built in)
+**source_data_file** |  optional  | string | Artifact Data File (defaults to built in)
+**min_cef_per_artifact** |  optional  | numeric | Min data lines per artifact
+**max_cef_per_artifact** |  optional  | numeric | Max data lines per artifact
+**event_status** |  optional  | string | Event Status
+**limit_status_to_new** |  optional  | boolean | Limit event statuses to new status types
+**event_severity** |  optional  | string | Event Severity
+**event_sensitivity** |  optional  | string | Event Sensitivity
+**event_owner_range** |  optional  | string | Event owner ID range (ie: 1-5) (0-0 disables)
+**verify_server_cert** |  optional  | boolean | Whether to verify server certificate
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
-[on poll](#action-on-poll) - Callback action for the on\_poll ingest functionality  
+[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality  
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity using supplied configuration
@@ -195,7 +195,7 @@ No parameters are required for this action
 No Output  
 
 ## action: 'on poll'
-Callback action for the on\_poll ingest functionality
+Callback action for the on_poll ingest functionality
 
 Type: **ingest**  
 Read only: **True**
@@ -203,8 +203,8 @@ Read only: **True**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**container\_count** |  optional  | Number of events to generate | numeric | 
-**artifact\_count** |  optional  | Number of artifacts to generate per event | numeric | 
+**container_count** |  optional  | Number of events to generate | numeric | 
+**artifact_count** |  optional  | Number of artifacts to generate per event | numeric | 
 
 #### Action Output
 No Output

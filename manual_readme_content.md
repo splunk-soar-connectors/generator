@@ -1,15 +1,3 @@
-[comment]: # "Auto-generated SOAR connector documentation"
-# Generator
-
-Publisher: Splunk  
-Connector Version: 4.0.77  
-Product Vendor: Generic  
-Product Name: Generator  
-Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.1.0  
-
-This app generates ingested sample data
-
 [comment]: # " File: README.md"
 [comment]: # "  Copyright (c) 2016-2023 Splunk Inc."
 [comment]: # ""
@@ -152,59 +140,3 @@ like the app to randomly pull from in order to have more selectable event (conta
 specific to your needs.  
   
 Default data file: [event_names.txt](inc/event_names.txt)
-
-
-### Configuration Variables
-The below configuration variables are required for this Connector to operate.  These variables are specified when configuring a Generator asset in SOAR.
-
-VARIABLE | REQUIRED | TYPE | DESCRIPTION
--------- | -------- | ---- | -----------
-**create_containers** |  required  | numeric | Events to generate
-**container_prefix** |  optional  | string | Event name prefix
-**create_artifacts** |  required  | numeric | Artifacts per event to generate
-**artifact_prefix** |  optional  | string | Artifact name prefix
-**artifact_label** |  optional  | string | Artifact label
-**artifact_count_override** |  optional  | boolean | Force exact artifact count
-**container_tag** |  optional  | string | Tag to add to generated event containers
-**artifact_tag** |  optional  | string | Tag to add to generated artifacts
-**source_name_file** |  optional  | string | Event Name File (defaults to built in)
-**source_data_file** |  optional  | string | Artifact Data File (defaults to built in)
-**min_cef_per_artifact** |  optional  | numeric | Min data lines per artifact
-**max_cef_per_artifact** |  optional  | numeric | Max data lines per artifact
-**event_status** |  optional  | string | Event Status
-**limit_status_to_new** |  optional  | boolean | Limit event statuses to new status types
-**event_severity** |  optional  | string | Event Severity
-**event_sensitivity** |  optional  | string | Event Sensitivity
-**event_owner_range** |  optional  | string | Event owner ID range (ie: 1-5) (0-0 disables)
-**verify_server_cert** |  optional  | boolean | Whether to verify server certificate
-
-### Supported Actions  
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration  
-[on poll](#action-on-poll) - Callback action for the on_poll ingest functionality  
-
-## action: 'test connectivity'
-Validate the asset configuration for connectivity using supplied configuration
-
-Type: **test**  
-Read only: **True**
-
-#### Action Parameters
-No parameters are required for this action
-
-#### Action Output
-No Output  
-
-## action: 'on poll'
-Callback action for the on_poll ingest functionality
-
-Type: **ingest**  
-Read only: **True**
-
-#### Action Parameters
-PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
---------- | -------- | ----------- | ---- | --------
-**container_count** |  optional  | Number of events to generate | numeric | 
-**artifact_count** |  optional  | Number of artifacts to generate per event | numeric | 
-
-#### Action Output
-No Output

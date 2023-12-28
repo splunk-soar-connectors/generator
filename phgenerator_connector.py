@@ -1,6 +1,6 @@
 # File: phgenerator_connector.py
 #
-# Copyright (c) 2016-2022 Splunk Inc.
+# Copyright (c) 2016-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -344,6 +344,7 @@ class GeneratorConnector(BaseConnector):
 
     def _test_connectivity(self):
         # If we are here we have successfully passed connectivity through initialize method
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         self.save_progress("Test Connectivity Passed")
 
         self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)

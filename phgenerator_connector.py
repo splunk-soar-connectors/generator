@@ -1,6 +1,6 @@
 # File: phgenerator_connector.py
 #
-# Copyright (c) 2016-2022 Splunk Inc.
+# Copyright (c) 2016-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,11 +48,16 @@ class GeneratorConnector(BaseConnector):
         action = self.get_action_identifier()
         test_connectivity = False
 
+        verify_server_cert = config.get('verify_server_cert', False)
+
         if (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY or action == 'test_connectivity'):
             test_connectivity = True
 
         try:
-            r = requests.get('{0}rest/container_options'.format(self._get_phantom_base_url()), verify=False)
+            r = requests.get(
+                '{0}rest/container_options'.format(self._get_phantom_base_url()),
+                verify=verify_server_cert,
+                timeout=DEFAULT_TIMEOUT)
             resp_json = r.json()
         except Exception as e:
             return self.set_status(phantom.APP_ERROR, "Could not get severity and status options from platform: {0}".format(e))
@@ -339,6 +344,7 @@ class GeneratorConnector(BaseConnector):
 
     def _test_connectivity(self):
         # If we are here we have successfully passed connectivity through initialize method
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         self.save_progress("Test Connectivity Passed")
 
         self.set_status(phantom.APP_SUCCESS, GEN_TEST_CONN_SUCCESS)
@@ -398,4 +404,4 @@ if __name__ == '__main__':
 
         print(result)
 
-    exit(0)
+    sys.exit(0)

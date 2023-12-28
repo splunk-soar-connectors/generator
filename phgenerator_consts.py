@@ -1,6 +1,6 @@
 # File: phgenerator_consts.py
 #
-# Copyright (c) 2016-2022 Splunk Inc.
+# Copyright (c) 2016-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,3 +52,5 @@ DUE_SLA_DELTA_MIN = 30
 DUE_SLA_DELTA_MAX = 60
 DUE_SLA_DELTA_UNITS = "minutes"
 #
+
+DEFAULT_TIMEOUT = 30  # seconds

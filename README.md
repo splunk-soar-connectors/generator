@@ -2,7 +2,7 @@
 # Generator
 
 Publisher: Splunk  
-Connector Version: 4.0.77  
+Connector Version: 4.0.78  
 Product Vendor: Generic  
 Product Name: Generator  
 Product Version Supported (regex): ".\*"  

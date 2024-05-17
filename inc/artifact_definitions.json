@@ -3,7 +3,6 @@
     "cef":"json_rnd_sample_cef",
     "container_id": "int",
     "data": "json_custom_fixedname",
-    "ingest_app_id":"int",
     "label":"string_lower",
     "severity":"string_severity",
     "source_data_identifier":"string_unique",

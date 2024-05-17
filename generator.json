@@ -5,22 +5,21 @@
     "type": "generic",
     "publisher": "Splunk",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.77",
+    "app_version": "4.0.78",
     "utctime_updated": "2022-01-24T18:18:51.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "5.1.0",
+    "min_phantom_version": "6.1.1",
     "latest_tested_versions": [
-        "Phantom 4.8.24304",
-        "Phantom 4.9.36376"
+        "Splunk SOAR 6.2.0.355"
     ],
     "python_version": "3",
     "fips_compliant": true,
     "logo": "logo_generator.svg",
     "logo_dark": "logo_generator_dark.svg",
-    "license": "Copyright (c) 2016-2023 Splunk Inc.",
+    "license": "Copyright (c) 2016-2024 Splunk Inc.",
     "configuration": {
         "create_containers": {
             "data_type": "numeric",

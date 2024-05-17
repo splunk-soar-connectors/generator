@@ -6,7 +6,7 @@ Connector Version: 4.0.77
 Product Vendor: Generic  
 Product Name: Generator  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 5.1.0  
+Minimum Product Version: 6.1.1  
 
 This app generates ingested sample data
 

@@ -11,9 +11,9 @@
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.2.1",
     "latest_tested_versions": [
-        "Splunk SOAR 6.2.0.355"
+        "Splunk SOAR 6.2.2.134"
     ],
     "python_version": "3",
     "fips_compliant": true,

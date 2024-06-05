@@ -245,7 +245,7 @@ class GeneratorConnector(BaseConnector):
         pfg.create_dataargs('add', 'container', 'due_time', due_time_args)
         # end SLA section
         #
-        assetid = self.get_asset_id()
+        assetid = int(self.get_asset_id())
         pfg.field_override('modify', 'container', 'asset_id', assetid)
         pfg.field_override('delete', 'container', 'close_time')
         pfg.field_override('delete', 'container', 'owner_id')

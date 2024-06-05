@@ -1,1 +1,2 @@
 **Unreleased**
+* Enforce typing for container creation payload [PAPP-34033]

@@ -5,15 +5,15 @@
     "type": "generic",
     "publisher": "Splunk",
     "main_module": "phgenerator_connector.py",
-    "app_version": "4.0.79",
+    "app_version": "4.0.710",
     "utctime_updated": "2022-01-24T18:18:51.000000Z",
     "package_name": "phantom_generator",
     "product_vendor": "Generic",
     "product_name": "Generator",
     "product_version_regex": ".*",
-    "min_phantom_version": "6.1.1",
+    "min_phantom_version": "6.2.1",
     "latest_tested_versions": [
-        "Splunk SOAR 6.2.0.355"
+        "Splunk SOAR 6.2.2.134"
     ],
     "python_version": "3",
     "fips_compliant": true,

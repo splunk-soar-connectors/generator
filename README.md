@@ -2,11 +2,11 @@
 # Generator
 
 Publisher: Splunk  
-Connector Version: 4.0.79  
+Connector Version: 4.0.710  
 Product Vendor: Generic  
 Product Name: Generator  
 Product Version Supported (regex): ".\*"  
-Minimum Product Version: 6.1.1  
+Minimum Product Version: 6.2.1  
 
 This app generates ingested sample data
 

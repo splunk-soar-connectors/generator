@@ -402,6 +402,7 @@ if __name__ == "__main__":
 
     in_json = None
     in_email = None
+    result = None
     with open(sys.argv[1]) as f:
         in_json = f.read()
         in_json = json.loads(in_json)
@@ -424,6 +425,7 @@ if __name__ == "__main__":
                 # connector.set_asset_id("1")
                 connector._load_app_json()
                 connector._init_ingestion_dicts()
+                result = "Configuration loaded successfully"
 
         print(result)
 

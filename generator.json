@@ -15,7 +15,7 @@
     "latest_tested_versions": [
         "Splunk SOAR 6.2.2.134"
     ],
-    "python_version": "3",
+    "python_version": ["3.9", "3.13"],
     "fips_compliant": true,
     "logo": "logo_generator.svg",
     "logo_dark": "logo_generator_dark.svg",

@@ -1,7 +1,7 @@
 # Generator
 
 Publisher: Splunk <br>
-Connector Version: 4.0.711 <br>
+Connector Version: 4.0.712 <br>
 Product Vendor: Generic <br>
 Product Name: Generator <br>
 Minimum Product Version: 6.2.1

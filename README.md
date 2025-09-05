@@ -1,9 +1,9 @@
 # Generator
 
-Publisher: Splunk \
-Connector Version: 4.0.711 \
-Product Vendor: Generic \
-Product Name: Generator \
+Publisher: Splunk <br>
+Connector Version: 4.0.711 <br>
+Product Vendor: Generic <br>
+Product Name: Generator <br>
 Minimum Product Version: 6.2.1
 
 This app generates ingested sample data
@@ -154,14 +154,14 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration \
+[test connectivity](#action-test-connectivity) - Validate the asset configuration for connectivity using supplied configuration <br>
 [on poll](#action-on-poll) - Callback action for the on_poll ingest functionality
 
 ## action: 'test connectivity'
 
 Validate the asset configuration for connectivity using supplied configuration
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -176,7 +176,7 @@ No Output
 
 Callback action for the on_poll ingest functionality
 
-Type: **ingest** \
+Type: **ingest** <br>
 Read only: **True**
 
 #### Action Parameters

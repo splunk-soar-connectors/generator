@@ -1,1 +1,3 @@
 **Unreleased**
+
+- Constrain configured data files to the app-specific data directory and parse records as literals instead of executable code.

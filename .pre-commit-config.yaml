@@ -58,7 +58,7 @@ repos:
       - id: detect-secrets
         args: ['--no-verify']
         exclude_types: [json]
-        exclude: "README.md"
+        exclude: "^(README.md|manual_readme_content.md|inc/artifact_dump(?:_v[12])?\\.txt)$"
   # Central hooks
   - repo: https://github.com/phantomcyber/dev-cicd-tools
     rev: v2.2.4

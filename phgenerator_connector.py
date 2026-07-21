@@ -1,6 +1,6 @@
 # File: phgenerator_connector.py
 #
-# Copyright (c) 2016-2025 Splunk Inc.
+# Copyright (c) 2016-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #
 #
 # Phantom imports
+import ast
 import os
 import random
 import time
@@ -38,6 +39,14 @@ class GeneratorConnector(BaseConnector):
         self._status = None
         self._statuses = None
         self._new_statuses = None
+
+    @staticmethod
+    def _resolve_contained_path(base_directory, relative_path):
+        base_directory = os.path.realpath(base_directory)
+        candidate = os.path.realpath(os.path.join(base_directory, relative_path))
+        if os.path.commonpath((base_directory, candidate)) != base_directory:
+            raise ValueError("Configured data file must remain inside the app-specific data directory")
+        return candidate
 
     def initialize(self):
         # Support custom severities and statuses
@@ -122,7 +131,7 @@ class GeneratorConnector(BaseConnector):
             for lineno, line in enumerate(inf):
                 if self.is_poll_now():
                     self.send_progress(f"Reading line in event data file: {lineno + 1}")
-                dicts_from_file_list.append(eval(line))
+                dicts_from_file_list.append(ast.literal_eval(line))
 
         # dicts_from_file now contains the dictionaries created from the text file
         return dicts_from_file_list
@@ -196,13 +205,13 @@ class GeneratorConnector(BaseConnector):
         elif "inc/empty.txt" in config.get("source_data_file", FILE_ARTIFACT_DUMP):
             artifact_datafile = useinc_filepath + FILE_ARTIFACT_EMPTY
         else:
-            artifact_datafile = os.path.normpath(user_data_filepath + "/" + config.get("source_data_file", FILE_ARTIFACT_DUMP))
+            artifact_datafile = self._resolve_contained_path(user_data_filepath, config.get("source_data_file", FILE_ARTIFACT_DUMP))
 
         # set name file to builtin by const file or by user string to apps/data/generator dir
         if config.get("source_name_file", FILE_INCIDENT_NAMES) == FILE_INCIDENT_NAMES:
             incident_datafile = useinc_filepath + FILE_INCIDENT_NAMES
         else:
-            incident_datafile = os.path.normpath(user_data_filepath + "/" + config.get("source_name_file", FILE_INCIDENT_NAMES))
+            incident_datafile = self._resolve_contained_path(user_data_filepath, config.get("source_name_file", FILE_INCIDENT_NAMES))
 
         return self._on_poll_generate_artifacts(
             config,
